@@ -1,0 +1,47 @@
+<app-settings></app-settings>
+    <div class="container">
+        <div class="myDashboard-content">
+            <form class="edit-account" [formGroup]="profilePictureForm">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <label class="lablePreview">Image Preview</label>
+                        <div class="imagePreview">
+                           <img src={{userInfo?.selfie_image}} >
+                        </div>
+                        <!-- <div class="form-group filechoose">
+                            <input type="file" class="form-control" formControlName="profile_img">
+                        </div> -->
+                    </div>
+                    <div class="row" style="margin:auto;text-align: center;">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <div *ngIf="showWebcam" style="margin-bottom: 20px;">
+                                    <webcam  [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
+                                    [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+                                    [videoOptions]="videoOptions" [width]="200" [height]="200"
+                                    [imageQuality]="1"
+                                    (cameraSwitched)="cameraWasSwitched($event)"
+                                    (initError)="handleInitError($event)"
+                                    >
+                                    </webcam>
+                                </div>
+                                <div class="snapshot" *ngIf="webcamImage && !showWebcam" style="margin-bottom: 20px;"> 
+                                    <img  id="webImg" [width]="200" [height]="200" style="border-radius: 50%;" [src]="webcamImage.imageAsDataUrl"/>
+                                </div>
+                                <button class="webcam-button" (click)="toggleWebcam();" *ngIf="!showWebcam"><i class="iconinside-btn bx bxs-camera"></i>Selfie
+                                </button>
+                                <!-- <div class="help-block mt-1 text-danger"><i class="ft-alert-circle align-middle"></i> Selfie is
+                                    required</div> -->
+                                <button class="webcam-button" (click)="triggerSnapshot();" *ngIf="showWebcam"><i class="iconinside-btn1 bx bxs-photo-album"></i>Take A Snapshot</button>
+                                <button class="webcam-button" (click)="showNextWebcam(true);" *ngIf="multipleWebcamsAvailable"> <i class="iconinside-btn bx bxs-camera"></i> Camera Front / Back</button>
+                            </div> 
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-12 col-md-12" style="margin-bottom: 30px;margin-top: 30px;">
+                        <button type="submit" class="default-btn" (click)="updateProfileImage()" [disabled]="profilePictureForm.invalid"><i class='bx bx-save icon-arrow before'></i><span class="label">Save Changes</span><i class="bx bx-save icon-arrow after"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

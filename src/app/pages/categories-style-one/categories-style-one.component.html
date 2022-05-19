@@ -1,0 +1,14 @@
+<div class="courses-categories-slides">
+    <owl-carousel-o [options]="categoriesSlides">
+        <ng-template carouselSlide *ngFor="let catDt of categoryList;let i=index">
+            <div class="single-categories-courses-box mb-30">
+                <div class="icon">
+                    <i class='{{catDt.icon}}'></i>
+                </div>
+                <h3>{{catDt.category}}</h3>
+                <span>{{catDt.catCount}} Courses</span>
+                <a style="cursor: pointer;" (click)="getCoursesPerCategory(catDt)" class="link-btn"></a>
+            </div>
+        </ng-template>
+    </owl-carousel-o>
+</div>

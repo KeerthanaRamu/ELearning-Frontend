@@ -1,0 +1,297 @@
+<app-instructor></app-instructor>
+<div class="container">
+<div class="courses-categories-slides">
+    <owl-carousel-o [options]="categoriesSlides">
+        <ng-template carouselSlide>
+            <div class="single-categories-courses-box mb-30" (click)="getUserRevenueDetails()"> 
+                <div class="icon">
+                    <i class='bx bxs-badge-dollar'></i>
+                </div>
+                <h3>Total Revenue</h3>
+                <span>${{totalRevenue > 0 ? totalRevenue : '0.00'}}</span>
+                <span style="font-size: 13px;font-weight: 400;"> ${{monthRevenue > 0 ? monthRevenue : '0.00'}} this month</span>
+                <a style="cursor: pointer;" class="link-btn"></a>
+            </div>
+        </ng-template>
+        <ng-template carouselSlide>
+            <div class="single-categories-courses-box mb-30" (click)="getUserEnrollmentDetails()">
+                <div class="icon">
+                    <i class='bx bxs-user-check'></i>
+                </div>
+                <h3>Total Enrollments</h3>
+                <span>{{totalEnroll ? totalEnroll : 0}}</span>
+                <span style="font-size: 13px;font-weight: 400;"> {{monthEnroll}} this month</span>
+                <a style="cursor: pointer;" class="link-btn"></a>
+            </div>
+        </ng-template>
+        <ng-template carouselSlide>
+            <div class="single-categories-courses-box mb-30" (click)="getUserRatingDetails()">
+                <div class="icon">
+                    <i class='bx bxs-star'></i>
+                </div>
+                <h3>Instructor Rating</h3>
+                <span>{{totalRating ? totalRating : 0}}</span>
+                <span style="font-size: 13px;font-weight: 400;"> {{monthRating}} this month</span>
+                <a style="cursor: pointer;" class="link-btn"></a>
+            </div>
+        </ng-template>
+    </owl-carousel-o>
+</div>
+    <div *ngIf="showRevenue"  style="margin-bottom: 20px;">
+        <div class="myDashboard-content">
+            <h5 style="text-align: center;margin-bottom: 15px;">Revenue Details</h5>
+            <div class="orders-table table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th></th>
+                            <th>Course Title</th>
+                            <th>Revenue</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let revenuedt of revenueDetails | paginate : {
+                            id:'paginationRevenue',
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count};let i=index;">
+                            <td>{{i+1}}</td>
+                            <td style="width: 10%;"><img src="{{revenuedt.course_image ? revenuedt.course_image : 'assets/img/courses_place.png'}}"></td>
+                            <td>{{revenuedt.course_title}}</td>
+                            <td>${{revenuedt.courseRevenue}}</td>
+                            <td><a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#viewRevenueDetail" (click)="viewStudentsForRevenue(revenuedt)" class="view-button">View Students</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="showRevenue" style="margin-top:20px;">
+            <div class="pagination-area text-center">
+                <pagination-controls responsive="true" id="paginationRevenue" previousLabel="Prev" nextLabel="Next"
+                    (pageChange)="onTableDataChangeRevenue($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showEnrollment" style="margin-bottom: 20px;">
+        <div class="myDashboard-content">
+            <h5 style="text-align: center;margin-bottom: 15px;">Enrollment Details</h5>
+            <div class="orders-table table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let enroll of enrollDetails | paginate : {
+                            id:'paginationEnroll',
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count};let i=index;">
+                            <td>{{i+1}}</td>
+                            <td style="width: 10%;"><img style="border-radius: 50px;" src="{{enroll.selfie_image ? enroll.selfie_image : '../../../assets/img/user_img.png'}}"></td>
+                            <td>{{enroll.user_name}}</td>
+                            <td><a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#viewEnrollDetail" (click)="viewCoursesForEnroll(enroll)" class="view-button">View Courses</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="showEnrollment" style="margin-top:20px;">
+            <div class="pagination-area text-center">
+                <pagination-controls responsive="true" id="paginationEnroll" previousLabel="Prev" nextLabel="Next"
+                    (pageChange)="onTableDataChangeEnroll($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showRating" style="margin-bottom: 20px;">
+        <div class="myDashboard-content">
+            <h5 style="text-align: center;margin-bottom: 15px;">Rating Details</h5>
+            <div class="orders-table table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th></th>
+                            <th>Course Title</th>
+                            <th>Rating</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ratdt of ratingDetails | paginate : {
+                            id:'paginationRating',
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count};let i=index;">
+                            <td>{{i+1}}</td>
+                            <td style="width: 10%;"><img src="{{ratdt.course_image ? ratdt.course_image : 'assets/img/courses_place.png'}}"></td>
+                            <td>{{ratdt.course_title}}</td>
+                            <td><ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="ratdt.averageRating"></ngx-stars>
+                                {{ratdt.averageRating}} ({{ratdt.ratingCount}} Rating)</td>
+                            <td><a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#viewRatingDetail" (click)="viewCoursesForRating(ratdt)" class="view-button">View Detail</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="showRating" style="margin-top:20px;">
+            <div class="pagination-area text-center">
+                <pagination-controls responsive="true" id="paginationRating" previousLabel="Prev" nextLabel="Next"
+                    (pageChange)="onTableDataChangeRating($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="viewRevenueDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Students</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="myDashboard-content">
+                <!-- <div class="orders-table table-responsive"> -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let revenueview of revenueViewDetails | paginate : {
+                                id:'paginationRevenueView',
+                                itemsPerPage: viewtableSize,
+                                currentPage: viewPage,
+                                totalItems: viewCount};let i=index;">
+                                <td style="width: 20%;"><img style="border-radius: 50px;" src="{{revenueview.selfie_image ? revenueview.selfie_image : '../../../assets/img/user_img.png'}}"></td>
+                                <td>{{revenueview.user_name}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <!-- </div> -->
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:20px;" *ngIf="revenueViewDetails?.length >0">
+                <div class="pagination-area text-center">
+                    <pagination-controls responsive="true" id="paginationRevenueView" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="onTableDataChangeRevenueView($event)">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="viewEnrollDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Courses</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="myDashboard-content">
+                <!-- <div class="orders-table table-responsive"> -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Title</th>
+                                <th>SubTitle</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let enrollview of enrollViewDetails | paginate : {
+                                id:'paginationEnrollView',
+                                itemsPerPage: viewtableSize,
+                                currentPage: viewPage,
+                                totalItems: viewCount};let i=index;">
+                                <td style="width: 20%;"><img src="{{enrollview.course_image ? enrollview.course_image : 'assets/img/courses_place.png'}}"></td>
+                                <td style="width: 20%;"> <span style="font-size:16px">{{enrollview.course_title}}</span></td>
+                                <td>{{enrollview.course_subtitle}}</td>
+                                <td>{{enrollview.course_description}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <!-- </div> -->
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:20px;" *ngIf="enrollViewDetails?.length > 0">
+                <div class="pagination-area text-center">
+                    <pagination-controls responsive="true" id="paginationEnrollView" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="onTableDataChangeEnrollView($event)">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="viewRatingDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Students Rating</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="myDashboard-content">
+                <!-- <div class="orders-table table-responsive"> -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Rating</th>
+                                <th>Review</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let ratingdt of ratingViewDetails | paginate : {
+                                id:'paginationRatingView',
+                                itemsPerPage: viewtableSize,
+                                currentPage: viewPage,
+                                totalItems: viewCount};let i=index;">
+                                <td style="width: 10%;"><img style="border-radius: 70px;" src="{{ratingdt.selfie_image ? ratingdt.selfie_image : '../../../assets/img/user_img.png'}}"></td>
+                                <td>{{ratingdt.user_name}}</td>
+                                <td><ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="ratingdt.rating"></ngx-stars>
+                                    {{ratingdt.rating}}</td>
+                                <td>{{ratingdt.review}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <!-- </div> -->
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:20px;" *ngIf="ratingViewDetails?.length > 0">
+                <div class="pagination-area text-center">
+                    <pagination-controls responsive="true" id="paginationRatingView" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="onTableDataChangeRatingView($event)">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,17 @@
+
+<div class="my-dashboard-area ptb-100" style="padding-top: 30px;">
+    <div class="container">
+        <div class="myDashboard-navigation">
+            <ul>
+                <li><a routerLink="/settings/profile" [ngClass]="{'active': selectedItem.firstLi == 1}" (click)="listClick( 1, 'firstLi')"><i class='bx bxs-dashboard'></i> Profile</a></li>
+                <li><a routerLink="/settings/profile-picture" [ngClass]="{'active': selectedItem.firstLi == 2}" (click)="listClick( 2, 'firstLi')"><i class='bx bx-book-open'></i> Profile Picture</a></li>
+                <li><a routerLink="/settings/account-security" [ngClass]="{'active': selectedItem.firstLi == 3}" (click)="listClick( 3, 'firstLi')"><i class='bx bx-download'></i> Account Security</a></li>
+                <!-- <li><a routerLink="/settings/notification-settings" [ngClass]="{'active': selectedItem.firstLi == 4}" (click)="listClick( 4, 'firstLi')"><i class='bx bx-home-alt'></i> Notification Settings</a></li> -->
+                <!-- <li><a routerLink="/downloads" [ngClass]="{'active': selectedItem.firstLi == 3}" (click)="listClick( 3, 'firstLi')"><i class='bx bx-download'></i> Students</a></li>
+                <li><a routerLink="/edit-address" [ngClass]="{'active': selectedItem.firstLi == 4}" (click)="listClick( 4, 'firstLi')"><i class='bx bx-home-alt'></i> Reviews</a></li>
+                <li><a routerLink="/edit-account" [ngClass]="{'active': selectedItem.firstLi == 5}" (click)="listClick( 5, 'firstLi')"><i class='bx bx-edit'></i> Communication</a></li> -->
+            </ul>
+        </div>
+        
+    </div>
+</div>

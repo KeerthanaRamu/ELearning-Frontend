@@ -1,0 +1,116 @@
+<app-admin></app-admin>
+<div class="my-dashboard-area ptb-100" style="padding-top: 10px !important;margin-bottom: 50px !important;">
+    <div class="container">
+        <div class="col-lg-12 col-md-12" style="padding-left: 0rem !important;text-align: end;padding-bottom: 14px;">
+            <a class="default-btn" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#createCategory"><i
+                    class='bx bx-book-open icon-arrow before'></i><span class="label">New Category</span><i
+                    class="bx bx-book-open icon-arrow after"></i></a>
+        </div>
+        <div class="myDashboard-content">
+            <div class="orders-table table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Category</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let cat of categoryList | paginate : {
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count
+                          };let i=index;">
+                            <td>{{cat.id}}</td>
+                            <td>{{cat.category}}</td>
+                            <td><a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#updateCategory" (click)="editCategory(cat)"><i class="bx bxs-pencil"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="categoryList.length > 0" style="padding-top: 20px;">
+            <div class="pagination-area text-center">
+                <pagination-controls responsive="true" previousLabel="Prev" nextLabel="Next"
+                    (pageChange)="onTableDataChange($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="createCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Create New Category</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="categoryForm">
+                <div class="billing-details">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label>Category<span class="required">*</span></label>
+                                <input type="text" formControlName="category"
+                                    placeholder="Enter Category" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label  style="display:inline;">Active</label>
+                                <input type="checkbox" formControlName="active" style="margin-left: 21px;height: 25px; width: 40px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="closeModal" [disabled]="categoryForm.invalid" (click)="setCategoryInfo()" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="updateCategory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Update Category</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="categoryUpdateForm">
+                <div class="billing-details">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label>Category<span class="required">*</span></label>
+                                <input type="text" formControlName="category"
+                                    placeholder="Enter Category" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label  style="display:inline;">Active</label>
+                                <input type="checkbox" formControlName="active" style="margin-left: 21px;height: 25px; width: 40px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="closeModal" [disabled]="categoryUpdateForm.invalid" (click)="updateCategoryInfo()" data-bs-dismiss="modal" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,817 @@
+<app-instructor></app-instructor>
+<!-- <ngx-spinner></ngx-spinner> -->
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+<div class="container">
+    <div class="myDashboard-navigation">
+        <div class="col-lg-12 col-md-12" style="padding-left: 0rem !important;text-align: end;" *ngIf="showCourseList">
+            <a class="default-btn" (click)="createNewCourse()" style="cursor: pointer;"><i
+                    class='bx bx-book-open icon-arrow before'></i><span class="label">New Course</span><i
+                    class="bx bx-book-open icon-arrow after"></i></a>
+        </div>
+        <div *ngIf="showNewCourse" style="padding-left: 0rem !important;">
+            <div class="checkout-area courseform">
+                <div class="container">
+                    <form [formGroup]="instructorForm">
+                        <div class="row" *ngIf="firstStep">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="billing-details">
+                                    <h3 class="title">Create a Course
+                                        <a (click)="showCourse()" style="float: right;cursor: pointer;"><i
+                                                class='bx bx-left-arrow-alt'></i><span class="label">Back</span></a>
+
+                                    </h3>
+                                    <div class="row" style="max-width: 700px;margin:auto">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Title <span class="required">*</span></label>
+                                                <input type="text" placeholder="Enter a Course Title"
+                                                    formControlName="courseTitle" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Category <span class="required">*</span></label>
+                                                <div class="select-box">
+                                                    <select class="form-select" formControlName="category">
+                                                        <option *ngFor="let cat of categoryList" value="{{cat.id}}">
+                                                            {{cat.category}}</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <!-- <a routerLink="/checkout" class="default-btn" style="border: 1px solid;"><i class='bx bx-paper-plane icon-arrow before'></i><span class="label">Back</span><i class="bx bx-paper-plane icon-arrow after"></i></a> -->
+                                            <button (click)="setCourseDetails()" class="default-btn"
+                                                [disabled]="!(rf.courseTitle.valid && rf.category.valid)"
+                                                style="border: 1px solid;float: right;cursor: pointer;"><i
+                                                    class='bx bx-right-arrow-alt icon-arrow before'></i><span
+                                                    class="label">Create Course</span><i
+                                                    class="bx bx-right-arrow-alt icon-arrow after"></i></button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12" *ngIf="secondStepNav">
+                                <div class="billing-details">
+                                    <h3 class="title" style="font-size: 16px;cursor: pointer;" (click)="showCourse()">
+                                        Back to Courses
+                                        <span style="font-size: 20px;padding: 30px;">{{courseInfo.course_title}}</span>
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-12" *ngIf="secondStepNav">
+                                
+                                <ul style="padding-left: 0rem !important;">
+                                    <li class="publish-li" (click)="showSecond()"> <i class="bx bx-right-arrow-circle"
+                                            style="font-size: 18px;"></i><span style="font-size: 16px;padding: 8px;">
+                                            Intendor Leaners</span></li>
+                                    <li class="publish-li" (click)="showCurriculum()"> <i
+                                            class="bx bx-right-arrow-circle" style="font-size: 18px;"></i><span
+                                            style="font-size: 16px;padding: 8px;"> Curriculum</span></li>
+                                    <li class="publish-li" (click)="showLandingPage()"> <i
+                                            class="bx bx-right-arrow-circle" style="font-size: 18px;"></i><span
+                                            style="font-size: 16px;padding: 8px;"> Course Landing Page</span></li>
+                                    <li class="publish-li" (click)="showPricing()"> <i class="bx bx-right-arrow-circle"
+                                            style="font-size: 18px;"></i><span style="font-size: 16px;padding: 8px;">
+                                            Pricing</span></li>
+                                </ul>
+                                <div class="row">
+                                    <button (click)="publishCourse()" class="default-btn"
+                                    style="border: 1px solid;cursor: pointer;float: right;cursor: pointer;"><i
+                                        class='bx bx-right-arrow-alt icon-arrow before'></i><span
+                                        class="label">Publish Course</span><i
+                                        class="bx bx-right-arrow-alt icon-arrow after"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-9 col-md-12" *ngIf="secondStep">
+                                <div class="billing-details">
+                                    <h3 class="title">Create a Course</h3>
+                                    <!-- <a (click)="showCourse()"  style="float: right;cursor: pointer;"><i class='bx bx-left-arrow-alt'></i><span class="label">Back To Courses</span></a> -->
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group add-row">
+                                                <label>What will students learn in your course? <span
+                                                        class="required">*</span></label>
+                                                <span>You must enter at least 4 learning objectives or outcomes that
+                                                    learners can expect to achieve after completing your course.
+                                                </span>
+                                                <div formArrayName="courseObjective">
+                                                    <div *ngFor="let obj of courseObjective.controls; let ti=index"
+                                                        style="margin-top: 10px;margin-bottom: 10px;">
+                                                        <div class="input-with-icon">
+                                                            <button class="btn btn-default icon" [disabled]="ti==0"
+                                                                (click)="removeObjective(ti)"><i class="bx bx-trash"
+                                                                    style="cursor: pointer;"></i></button>
+                                                            <input type="text"
+                                                                placeholder="Example : Identify and manage project risks"
+                                                                [formControlName]="ti" class="form-control" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group add-row">
+                                                <a style="cursor: pointer;" (click)="addNewObjective()"><span
+                                                        class="label" style="color: blue;">Add More</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>What are the requirements or prerequisites for taking your
+                                                    course? <span class="required">*</span></label>
+                                                <span>List the required skills, experience, tools or equipment learners
+                                                    should have prior to taking your course.</span>
+                                                <span>If there are no requirements, use this space as an opportunity to
+                                                    lower the barrier for beginners.</span>
+                                                <div formArrayName="courseRequirement">
+                                                    <div *ngFor="let req of courseRequirement.controls; let ti=index"
+                                                        style="margin-top: 10px;margin-bottom: 10px;">
+                                                        <div class="input-with-icon">
+                                                            <button class="btn btn-default icon" [disabled]="ti==0"
+                                                                (click)="removeRequirements(ti)"><i class="bx bx-trash"
+                                                                    style="cursor: pointer;"></i></button>
+                                                            <input type="text"
+                                                                placeholder="Example : Identify and manage project risks"
+                                                                [formControlName]="ti" class="form-control" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group add-row">
+                                                <a style="cursor: pointer;" (click)="addNewRequirements()"><span
+                                                        class="label" style="color: blue;">Add More</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Who is this course for?<span class="required">*</span></label>
+                                                <span>Write a clear description of the intended learners for your course
+                                                    who will find your course content valuable.</span>
+                                                <span>This will help you attract the right learners to your
+                                                    course.</span>
+                                                <div formArrayName="courseFor">
+                                                    <div *ngFor="let cfor of courseFor.controls; let ti=index"
+                                                        style="margin-top: 10px;margin-bottom: 10px;">
+                                                        <div class="input-with-icon">
+                                                            <button class="btn btn-default icon" [disabled]="ti==0"
+                                                                (click)="removeCourseFor(ti)"><i class="bx bx-trash"
+                                                                    style="cursor: pointer;"></i></button>
+                                                            <input type="text"
+                                                                placeholder="Example : Identify and manage project risks"
+                                                                [formControlName]="ti" class="form-control" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group add-row">
+                                                <a style="cursor: pointer;" (click)="addNewCourseFor()"><span
+                                                        class="label" style="color: blue;">Add More</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <!-- <a (click)="showFirst()" class="default-btn" style="border: 1px solid;cursor: pointer;"><i class='bx bx-left-arrow-alt icon-arrow before'></i><span class="label">Back</span><i class="bx bx-left-arrow-alt icon-arrow after"></i></a> -->
+                                            <button (click)="setCourseIntendorInfo()"
+                                                [disabled]="instructorForm.invalid" class="default-btn"
+                                                style="border: 1px solid;cursor: pointer;float: right;cursor: pointer;"><i
+                                                    class='bx bx-right-arrow-alt icon-arrow before'></i><span
+                                                    class="label">Save</span><i
+                                                    class="bx bx-right-arrow-alt icon-arrow after"></i></button>
+                                        </div>
+                                        <div class="alert alert-success" style="margin-top: 10px;margin-bottom: 10px;"
+                                            role="alert" *ngIf="successMsg">
+                                            Success !!
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-9 col-md-12" *ngIf="showCuriculum">
+                                <div class="billing-details">
+                                    <h3 class="title">Curriculum</h3>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12">
+                                                <i  style="font-size: 20px;cursor: pointer;font-weight: 700;margin-bottom: 10px;" *ngIf="toggleAdd" (click)="toggleAddBtn()" class="bx bx-plus"></i>
+                                                <i  style="font-size: 20px;cursor: pointer;font-weight: 700;margin-bottom: 10px;"  *ngIf="toggleRemove" (click)="removeSection()" class="bx bx-x" ></i>
+                                            </div>
+                                        </div>
+                                        <div class="accordion" style="margin-bottom: 10px;" *ngIf="showAdd">
+                                            <div class="accordion-item">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12">
+                                                        <label style="margin: 9px;font-weight: 700;">New Section </label>
+                                                        <div class="form-group add-row" >
+                                                            <input type="text" placeholder="Title" class="form-control"
+                                                            formControlName="sec_title">
+                                                        </div>
+                                                        <div class="form-group add-row" >
+                                                            <input type="text" placeholder="Enter a Learning Objective"
+                                                                formControlName="sec_desc" class="form-control">
+                                                        </div>
+                                                        <div class="form-group add-row" >
+                                                            <button class="section-save-btn"
+                                                              (click)="setSectionDetails()"  ><span class="label">Save
+                                                                    Section</span></button>
+                                                        </div>
+                                                        <div class="form-group add-row">
+                                                            <button class="section-save-btn"
+                                                            (click)="removeSection()" ><span
+                                                                class="label">Cancel</span></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                        <div formArrayName="sections">
+                                        <div *ngFor="let sec of sections().controls; let i=index" class="accordion" style="margin-bottom: 10px;" id="accordionPanelsStayOpenExample">
+                                            <div [formGroupName]="i" class="accordion-item">
+                                                <div class="col-lg-12 col-md-12" [attr.id]="'panelsStayOpen-heading'+i">
+                                                    <div class="form-group add-row accordion-header" style="background-color: #dfdfdf;">
+                                                        <label style="padding: 10px;" class="accordion-button "> Section {{i+1}} : <span style="font-weight: 300;padding-left: 15px;">{{sec.value.section_title}}</span>
+                                                            <!-- <label *ngIf="sec.value.id != ''">{{sec.value.section_title}}</label> -->
+                                                            <i 
+                                                            style="font-size: 20px;float: right;cursor: pointer;"
+                                                            class="bx bx-chevron-down"  data-bs-toggle="collapse"
+                                                            [attr.data-bs-target]="'#panelsStayOpen-collapse'+i" aria-expanded="true"
+                                                            [attr.aria-controls]="'panelsStayOpen-collapse'+i"></i>
+                                                            <i *ngIf="sec.value.id != ''" style="font-size: 14px;cursor: pointer;padding-left: 10px;"
+                                                             [attr.id]="'panelsStayOpen-editheading'+i"
+                                                             data-bs-toggle="collapse"
+                                                            [attr.data-bs-target]="'#panelsStayOpen-editcollapse'+i" aria-expanded="true"
+                                                            [attr.aria-controls]="'panelsStayOpen-editcollapse'+i" class="bx bxs-pencil" ></i>
+                                                            <i *ngIf="sec.value.id != ''" style="font-size: 14px;cursor: pointer;padding-left: 10px;"  (click)="removeExistingSection(sec.value)" data-bs-toggle="modal" data-bs-target="#deleteConfirm" class="bx bx-trash" ></i>
+                                                        </label>
+                                                    </div>
+                                                    <div  [attr.id]="'panelsStayOpen-editcollapse'+i" class="accordion-collapse collapse" [attr.aria-labelledby]="'panelsStayOpen-editheading'+i">
+                                                        <div class="col-lg-12 col-md-12" class="accordion-body">
+                                                            <div class="form-group add-row" >
+                                                                <input type="text" placeholder="Title" class="form-control"
+                                                                formControlName="section_title">
+                                                            </div>
+                                                            <div class="form-group add-row" >
+                                                                <input type="text" placeholder="Enter a Learning Objective"
+                                                                    formControlName="section_description" class="form-control">
+                                                            </div>
+                                                            <div class="form-group add-row" style="margin-bottom: 50px !important;">
+                                                                <button class="section-save-btn"
+                                                                    (click)="updateSectionDetails(i)"><span class="label">Update Section</span></button>
+                                                                <button class="section-save-btn"
+                                                                [attr.id]="'panelsStayOpen-editheading'+i"
+                                                                data-bs-toggle="collapse"
+                                                                [attr.data-bs-target]="'#panelsStayOpen-editcollapse'+i" aria-expanded="false"
+                                                                [attr.aria-controls]="'panelsStayOpen-editcollapse'+i" ><span
+                                                                    class="label">Cancel</span></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="accordion-item"> 
+                                                    <div [attr.id]="'panelsStayOpen-collapse'+i" class="accordion-collapse collapse" [attr.aria-labelledby]="'panelsStayOpen-heading'+i" style="cursor: pointer;">
+                                                        
+                                                        <div class="row" style="height: 30px;">
+                                                            <div class="col-lg-12 col-md-12" style="margin-bottom: 60px;" *ngIf="sec.value.id != ''">
+                                                                <a 
+                                                                [attr.id]="'panelsStayOpen-addlectureheading'+i"
+                                                                data-bs-toggle="collapse"
+                                                                [attr.data-bs-target]="'#panelsStayOpen-addlecturecollapse'+i" 
+                                                                [attr.aria-controls]="'panelsStayOpen-addlecturecollapse'+i"
+                                                                style="cursor: pointer;float: left;margin-left: 10px;">
+                                                                <i  style="font-size: 20px;float: right;cursor: pointer;font-weight: 700;margin-top: 5px;margin-right: 15px;" class="bx bx-plus" ></i>
+                                                                </a>
+                                                                <!-- <i  style="font-size: 20px;cursor: pointer;font-weight: 700;margin-bottom: 10px;"   class="bx bx-x" ></i> -->
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="accordion" style="margin: 25px;"  [attr.id]="'panelsStayOpen-addlecturecollapse'+i" class="accordion-collapse collapse" [attr.aria-labelledby]="'panelsStayOpen-addlectureheading'+i">
+                                                            <div class="accordion-item">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12 col-md-12">
+                                                                        <label style="margin: 9px;font-weight: 700;">New Lecture </label>
+                                                                        <div class="form-group lecture-box">
+                                                                            <div> <input type="text"
+                                                                                    placeholder="Title" formControlName="lect_title"
+                                                                                    class="form-control"> </div>
+                                                                        </div>
+                                                                        <div class="form-group lecture-box">
+                                                                            <span>Add a Description</span>
+                                                                            <textarea placeholder="Description" formControlName="lect_desc"
+                                                                                class="form-control">   </textarea>
+                                                                        </div>
+                                                                        <div class="form-group lecture-box" style="margin-bottom: 30px !important;">
+                                                                        <button class="section-save-btn"
+                                                                            (click)="setLectureDetails(i)"><span
+                                                                                class="label">Save Lecture</span></button>
+                                                                        <button class="section-save-btn"
+                                                                            [attr.id]="'panelsStayOpen-editlectureheading'+i"
+                                                                            data-bs-toggle="collapse"
+                                                                            [attr.data-bs-target]="'#panelsStayOpen-addlecturecollapse'+i" aria-expanded="false"
+                                                                            [attr.aria-controls]="'panelsStayOpen-addlecturecollapse'+i" ><span
+                                                                                class="label">Cancel</span></button>
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div formArrayName="lectures" style="margin: 25px;">
+                                                            <div *ngFor="let lect of lectures(i).controls; let bi=index" style="border: 1px solid #dfdfdf;margin-bottom: 10px;">
+                                                                <div [formGroupName]="bi">
+                                                                    <div class="col-lg-12 col-md-12" [attr.id]="'panelsStayOpen-subheading'+i+bi">
+                                                                        <div class="form-group add-row" style="background-color: #dfdfdf;">
+                                                                            <label style="padding: 10px;" class="accordion-header">Lecture {{bi+1}} : <span style="font-weight: 300;padding-left: 15px;">{{lect.value.lecture_title}}</span>
+                                                                                <i style="font-size: 20px;float: right;cursor: pointer;"
+                                                                                    class="bx bx-chevron-down" data-bs-toggle="collapse"
+                                                                                    [attr.data-bs-target]="'#panelsStayOpen-subcollapse'+i+bi" aria-expanded="false"
+                                                                                    [attr.aria-controls]="'panelsStayOpen-subcollapse'+i+bi"></i>
+                                                                                    <i *ngIf="lect.value.id != ''" style="font-size: 14px;cursor: pointer;padding-left: 10px;"
+                                                                                    [attr.id]="'panelsStayOpen-editlectureheading'+i+bi"
+                                                                                    data-bs-toggle="collapse"
+                                                                                    [attr.data-bs-target]="'#panelsStayOpen-editlecturecollapse'+i+bi" aria-expanded="false"
+                                                                                    [attr.aria-controls]="'panelsStayOpen-editlecturecollapse'+i+bi" class="bx bxs-pencil" ></i>
+                                                                                    <i *ngIf="lect.value.id != ''" style="font-size: 14px;cursor: pointer;padding-left: 10px;"  (click)="removeExistingLecture(lect.value)" data-bs-toggle="modal" data-bs-target="#deleteLectureConfirm" class="bx bx-trash" ></i>
+                                                                                    <i *ngIf="lect.value.id == ''" style="font-size: 14px;cursor: pointer;padding-left: 10px;"  (click)="removeLecture(i,bi)" class="bx bx-trash" ></i>
+                                                                                </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row" [attr.id]="'panelsStayOpen-editlecturecollapse'+i+bi" class="accordion-collapse collapse" [attr.aria-labelledby]="'panelsStayOpen-editlectureheading'+i+bi">
+                                                                        <div class="col-lg-12 col-md-12">
+                                                                            <div class="form-group lecture-box">
+                                                                                <div> <input type="text"
+                                                                                        placeholder="Title"
+                                                                                        formControlName="lecture_title"
+                                                                                        class="form-control"> </div>
+                                                                            </div>
+                                                                            <div class="form-group lecture-box">
+                                                                                <span>Add a Description</span>
+                                                                                <textarea placeholder="Description"
+                                                                                    formControlName="lecture_description"
+                                                                                    class="form-control">   </textarea>
+                                                                            </div>
+                                                                            <div class="form-group lecture-box"
+                                                                            *ngIf="lect.value.id != ''"
+                                                                            style="margin-bottom: 30px !important;">
+                                                                            <button class="section-save-btn"
+                                                                                (click)="updateLectureDetails(i,bi)"><span
+                                                                                    class="label">Update Lecture</span></button>
+                                                                            <button class="section-save-btn"
+                                                                                [attr.id]="'panelsStayOpen-editlectureheading'+i+bi"
+                                                                                data-bs-toggle="collapse"
+                                                                                [attr.data-bs-target]="'#panelsStayOpen-editlecturecollapse'+i+bi" aria-expanded="false"
+                                                                                [attr.aria-controls]="'panelsStayOpen-editlecturecollapse'+i+bi" ><span
+                                                                                    class="label">Cancel</span></button>
+                                                                        </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div [attr.id]="'panelsStayOpen-subcollapse'+i+bi" class="accordion-collapse collapse" [attr.aria-labelledby]="'panelsStayOpen-subheading'+i+bi" style="cursor: pointer;">
+                                                                        <div class="accordion" [attr.id]="'accordionExample'+i+bi">
+                                                                            <div class="accordion-item">
+                                                                                <div class="col-lg-12 col-md-12">
+                                                                                <div class="form-group lecture-box upload-group"
+                                                                                    style="text-align: center;">
+                                                                                    <button type="button" [attr.id]="'uploadVideoHeading'+i+bi"
+                                                                                        data-bs-toggle="collapse" class="accordion-button"
+                                                                                        [attr.data-bs-target]="'#uploadVideoCollapse'+i+bi" aria-expanded="false"
+                                                                                        [attr.aria-controls]="'uploadVideoCollapse'+i+bi" style="padding: 5px;cursor: pointer;display: initial;" 
+                                                                                    >Upload Video</button>
+                                                                                    <button type="button" [attr.id]="'urlHeading'+i+bi"
+                                                                                        data-bs-toggle="collapse" class="accordion-button"
+                                                                                        [attr.data-bs-target]="'#urlCollapse'+i+bi" aria-expanded="false"
+                                                                                        [attr.aria-controls]="'urlCollapse'+i+bi" style="padding: 5px;cursor: pointer;margin-left: 10px;display: initial;" 
+                                                                                    >URL</button>
+                                                                                    <button type="button" [attr.id]="'resourceHeading'+i+bi"
+                                                                                        data-bs-toggle="collapse" class="accordion-button"
+                                                                                        [attr.data-bs-target]="'#resourceCollapse'+i+bi" aria-expanded="false" (click)="getResourcesListofLecture(sec.value.id,lect.value.id)"
+                                                                                        [attr.aria-controls]="'resourceCollapse'+i+bi" style="padding: 5px;cursor: pointer;margin-left: 10px;display: initial;" 
+                                                                                    >Resources</button>
+                                                                                    <button type="button" [attr.id]="'assessmentHeading'+i+bi"
+                                                                                    data-bs-toggle="collapse"  class="accordion-button" 
+                                                                                    [attr.data-bs-target]="'#assessmentCollapse'+i+bi" aria-expanded="false"  (click)="getAssessmentList(sec.value.id,lect.value.id)"
+                                                                                    [attr.aria-controls]="'assessmentCollapse'+i+bi"style="padding: 5px;cursor: pointer;margin-left: 10px;display: initial;" 
+                                                                                    >Assessment</button>
+                                                                                    <div [attr.id]="'uploadVideoCollapse'+i+bi" class="accordion-collapse collapse" 
+                                                                                    [attr.aria-labelledby]="'uploadVideoHeading'+i+bi" [attr.data-bs-parent]="'#accordionExample'+i+bi">
+                                                                                            <input type="file" class="form-control" style="margin-top: 15px;"
+                                                                                            (change)="onFileChangeVideo($event,i,bi)">
+                                                                                        <div class="form-group lecture-box"
+                                                                                            style="margin-bottom: 30px !important;">
+                                                                                            <button class="section-save-btn"
+                                                                                               (click)="updateLectureVideo(i,bi)"><span
+                                                                                               class="label">Save</span></button>
+                                                                                            <button class="section-save-btn"
+                                                                                                [attr.id]="'uploadVideoHeading'+i+bi"
+                                                                                                data-bs-toggle="collapse"
+                                                                                                [attr.data-bs-target]="'#uploadVideoCollapse'+i+bi" aria-expanded="false"
+                                                                                                [attr.aria-controls]="'uploadVideoCollapse'+i+bi" ><span
+                                                                                                class="label">Cancel</span></button>
+                                                                                         </div>
+                                                                                    </div>
+                                                                                    <div [attr.id]="'urlCollapse'+i+bi" class="accordion-collapse collapse" 
+                                                                                    [attr.aria-labelledby]="'urlHeading'+i+bi" [attr.data-bs-parent]="'#accordionExample'+i+bi">
+                                                                                        <input type="text" placeholder="Enter a URL"
+                                                                                            class="form-control" style="margin-top: 15px;"
+                                                                                            formControlName="upload_url">
+                                                                                        <div class="form-group lecture-box"
+                                                                                            style="margin-bottom: 30px !important;">
+                                                                                            <button class="section-save-btn"
+                                                                                               (click)="updateLectureURL(i,bi)"><span
+                                                                                               class="label">Save</span></button>
+                                                                                            <button class="section-save-btn"
+                                                                                                [attr.id]="'urlHeading'+i+bi"
+                                                                                                data-bs-toggle="collapse"
+                                                                                                [attr.data-bs-target]="'#urlCollapse'+i+bi" aria-expanded="false"
+                                                                                                [attr.aria-controls]="'urlCollapse'+i+bi"  ><span
+                                                                                                class="label">Cancel</span></button>
+                                                                                         </div>
+                                                                                    </div>
+                                                                                    <div [attr.id]="'resourceCollapse'+i+bi" class="accordion-collapse collapse" 
+                                                                                    [attr.aria-labelledby]="'resourceHeading'+i+bi" [attr.data-bs-parent]="'#accordionExample'+i+bi">
+                                                                                        <input type="file" class="form-control" style="margin-top: 15px;" accept=".jpg,.png,.pdf"
+                                                                                        (change)="onFileChangeResource($event,i,bi)">
+                                                                                        <div class="form-group lecture-box"
+                                                                                            style="margin-bottom: 30px !important;">
+                                                                                            <button class="section-save-btn"
+                                                                                               (click)="updateLectureResource(i,bi)"><span
+                                                                                               class="label">Save</span></button>
+                                                                                            <button class="section-save-btn"
+                                                                                                [attr.id]="'resourceHeading'+i+bi"
+                                                                                                data-bs-toggle="collapse"
+                                                                                                [attr.data-bs-target]="'#resourceCollapse'+i+bi" aria-expanded="false"
+                                                                                                [attr.aria-controls]="'resourceCollapse'+i+bi"  ><span
+                                                                                                class="label">Cancel</span></button>
+                                                                                            </div>
+                                                                                                <div class="orders-table table-responsive" *ngIf="resourceList?.length>0">
+                                                                                                    <table class="table" *ngIf="resourceList[0].lecture_id == lect.value.id">
+                                                                                                        <thead>
+                                                                                                            <tr>
+                                                                                                                <th>S.No</th>
+                                                                                                                <th>File Name</th>
+                                                                                                                <th>Actions</th>
+                                                                                                            </tr>
+                                                                                                        </thead>
+                                                                                                        <tbody>
+                                                                                                            <tr *ngFor="let resrc of resourceList;let j=index;">
+                                                                                                                <td>{{j+1}}</td>
+                                                                                                                <td>{{resrc.resource_file_name}}</td>
+                                                                                                                <td><i class="bx bx-trash" (click)="deleteResourceInfo(resrc)"></i></td>
+                                                                                                            </tr>
+                                                                                                        </tbody>
+                                                                                                    </table>
+                                                                                                </div>
+                                                                                          
+                                                                                    </div>
+                                                                                    <div [attr.id]="'assessmentCollapse'+i+bi" class="accordion-collapse collapse" 
+                                                                                    [attr.aria-labelledby]="'assessmentHeading'+i+bi" [attr.data-bs-parent]="'#accordionExample'+i+bi">
+                                                                                        <div class="form-group lecture-box"
+                                                                                            style="margin-bottom: 30px !important;">
+                                                                                            <!-- <button class="section-save-btn"
+                                                                                               (click)="addNewQuestion(sec.value.id,lect.value.id)" data-bs-toggle="modal" data-bs-target="#addNewQuestion"><span
+                                                                                               class="label">Add</span></button> -->
+                                                                                               <i  style="font-size: 20px;cursor: pointer;font-weight: 700;margin-bottom: 10px;float: left;"  (click)="addNewQuestion(sec.value.id,lect.value.id)" data-bs-toggle="modal" data-bs-target="#addNewQuestion" class="bx bx-plus"></i>
+                                                                                            </div>
+                                                                                            <div class="orders-table table-responsive" *ngIf="assessmentList?.length>0">
+                                                                                                <table class="table"  *ngIf="assessmentList[0].lecture_id == lect.value.id">
+                                                                                                    <thead>
+                                                                                                        <tr>
+                                                                                                            <th>S.No</th>
+                                                                                                            <th>Question</th>
+                                                                                                            <th>Answer</th>
+                                                                                                            <th>Edit</th>
+                                                                                                            <th>Delete</th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody>
+                                                                                                        <tr *ngFor="let assessdt of assessmentList;let j=index;">
+                                                                                                            <td>{{j+1}}</td>
+                                                                                                            <td>{{assessdt.question}}</td>
+                                                                                                            <td>{{assessdt.answer}}</td>
+                                                                                                            <td><i class="bx bxs-pencil" (click)="editAssessmentInfo(assessdt)" data-bs-toggle="modal" data-bs-target="#editAssessment"></i></td>
+                                                                                                            <td><i class="bx bx-trash" (click)="deleteAssessmentInfo(assessdt)"></i></td>
+                                                                                                        </tr>
+                                                                                                    </tbody>
+                                                                                                </table>
+                                                                                            </div>
+                                                                                         
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                      
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-9 col-md-12" *ngIf="showLandPage">
+                                <div class="billing-details">
+                                    <h3 class="title">Course landing page</h3>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group add-row">
+                                                <label>Course Title<span class="required">*</span></label>
+                                                <input type="text" formControlName="courseTitle" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Course Subtitle<span class="required">*</span></label>
+                                                <input type="text" formControlName="courseSubtitle"
+                                                    placeholder="Insert your course subtitle" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Course description<span class="required">*</span></label>
+                                                <textarea type="text" class="form-control"
+                                                    formControlName="courseDescription">   </textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>What is primarily taught in your course?<span
+                                                        class="required">*</span></label>
+                                                <input type="text" class="form-control" formControlName="primaryInfo"
+                                                    placeholder="e.g. Landscape Photography ">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group">
+                                                <label>Select Level<span class="required">*</span></label>
+                                                <div class="select-box">
+                                                    <select class="form-select" formControlName="courseLevel">
+                                                        <option disabled selected value="">-- Select Level --</option>
+                                                        <option value="{{lvl.id}}" *ngFor="let lvl of LevelList">{{lvl.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group">
+                                                <label>Category<span class="required">*</span></label>
+                                                <div class="select-box">
+                                                    <select class="form-select" formControlName="primaryCategory"
+                                                        (click)="getSubCategory()">
+                                                        <option selected value="">-- Select Category --</option>
+                                                        <option *ngFor="let cat of categoryList" value="{{cat.id}}">
+                                                            {{cat.category}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-12">
+                                            <div class="form-group">
+                                                <label>SubCategory<span class="required">*</span></label>
+                                                <div class="select-box">
+                                                    <select class="form-select" formControlName="subcategory">
+                                                        <option selected value="">-- Select SubCategory --</option>
+                                                        <option *ngFor="let subcat of subCategoryList"
+                                                            value="{{subcat.id}}">{{subcat.subcategory}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Course Image<span class="required">*</span></label>
+                                                <input type="file" placeholder="Insert your course subtitle"
+                                                    (change)="onFileChangeCourseImage($event)" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <a (click)="setCourseLandingInfo()" class="default-btn"
+                                                style="border: 1px solid;cursor: pointer;float: right;"><i
+                                                    class='bx bx-right-arrow-alt icon-arrow before'></i><span
+                                                    class="label">Save</span><i
+                                                    class="bx bx-right-arrow-alt icon-arrow after"></i></a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-9 col-md-12" *ngIf="showPrice">
+                                <div class="billing-details">
+                                    <h3 class="title">Course Price</h3>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group add-row">
+                                                <label>Course Price<span class="required">*</span></label>
+                                                <input type="text" formControlName="coursePrice" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12">
+                                            <a (click)="setCoursePriceInfo()" class="default-btn"
+                                                style="border: 1px solid;cursor: pointer;float: right;"><i
+                                                    class='bx bx-right-arrow-alt icon-arrow before'></i><span
+                                                    class="label">Save</span><i
+                                                    class="bx bx-right-arrow-alt icon-arrow after"></i></a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <ul style="padding-left: 0rem !important;" *ngIf="showCourseList">
+            <li class="course_list" *ngFor="let courseDt of coursesList | paginate : {
+                itemsPerPage: tableSize,
+                currentPage: page,
+                totalItems: count
+              };let i = index">
+                <i class='course_icon bx bx-book-reader'></i>
+                <a style="cursor: pointer;" class="active">
+                    <span class="course_title1">{{courseDt.course_title}}</span>
+                    <span class="course_title2" (click)="editCourseInfo(courseDt)">Edit/Manage</span>
+                </a>
+            </li>
+        </ul>
+        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="showCourseList">
+            <div class="pagination-area text-center">
+                <pagination-controls responsive="true" previousLabel="Prev" nextLabel="Next"
+                    (pageChange)="onTableDataChange($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+  
+    <div class="modal fade" id="deleteConfirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Please Confirm</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete your Section?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="closeModal" data-bs-dismiss="modal" class="btn btn-primary" (click)="deleteSectionInfo()">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="deleteLectureConfirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Please Confirm</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete your Lecture?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="closeModal" data-bs-dismiss="modal" class="btn btn-primary" (click)="deleteLectureInfo()">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="addNewQuestion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Add New</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="assessmentForm">
+                    <div class="billing-details">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group add-row">
+                                    <label>Question<span class="required">*</span></label>
+                                    <textarea formControlName="question" placeholder="Insert your Question"
+                                     class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Option 1<span class="required">*</span></label>
+                                    <input type="text" formControlName="option1"
+                                        placeholder="Insert your Option 1" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Option 2<span class="required">*</span></label>
+                                    <input type="text" formControlName="option2"
+                                        placeholder="Insert your Option 2" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Option 3<span class="required">*</span></label>
+                                    <input type="text" formControlName="option3"
+                                        placeholder="Insert your Option 3" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Option 4<span class="required">*</span></label>
+                                    <input type="text" formControlName="option4"
+                                        placeholder="Insert your Option 4" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>Answer<span class="required">*</span></label>
+                                    <input type="text" formControlName="answer"
+                                        placeholder="Insert your Answer" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="closeModal" [disabled]="assessmentForm.invalid" (click)="setAssessmentInfo()" data-bs-dismiss="modal" class="btn btn-primary">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="editAssessment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="staticBackdropLabel">Update</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="assessmentUpdateForm">
+                    <div class="billing-details">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group add-row">
+                                    <label>Question<span class="required">*</span></label>
+                                    <textarea formControlName="question" placeholder="Insert your Question"
+                                     class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Option 1<span class="required">*</span></label>
+                                    <input type="text" formControlName="option1"
+                                        placeholder="Insert your Option 1" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Option 2<span class="required">*</span></label>
+                                    <input type="text" formControlName="option2"
+                                        placeholder="Insert your Option 2" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Option 3<span class="required">*</span></label>
+                                    <input type="text" formControlName="option3"
+                                        placeholder="Insert your Option 3" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="form-group">
+                                    <label>Option 4<span class="required">*</span></label>
+                                    <input type="text" formControlName="option4"
+                                        placeholder="Insert your Option 4" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-group">
+                                    <label>Answer<span class="required">*</span></label>
+                                    <input type="text" formControlName="answer"
+                                        placeholder="Insert your Answer" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" id="closeModal" [disabled]="assessmentUpdateForm.invalid" (click)="updateAssessmentInfo()" data-bs-dismiss="modal" class="btn btn-primary">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>

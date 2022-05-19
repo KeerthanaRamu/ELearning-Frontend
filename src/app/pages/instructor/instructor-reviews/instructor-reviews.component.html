@@ -1,0 +1,32 @@
+
+  <app-instructor></app-instructor>
+  <div class="container">
+    <div class="myDashboard-navigation" style="margin-bottom: 30px;">
+        <div class="courses-review-comments">
+            <h3>{{resObj?.length}} Reviews</h3>
+                <div class="user-review" *ngFor="let rev of reviewInfo| paginate : {
+                    itemsPerPage: tableSize,
+                    currentPage: page,
+                    totalItems: count}">
+                    <img src="{{rev.selfie_image ? rev.selfie_image: '../../../../assets/img/user_img.png'}}" alt="image">
+                    <div class="review-rating">
+                        <div class="review-stars">
+                            <!-- <ngx-star-rating class="frontview" [disabled]="true" [(ngModel)]="rev.rating">
+                            </ngx-star-rating><br/> -->
+                            <ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="rev.rating"></ngx-stars>
+
+                        </div>
+                        <span class="d-inline-block">{{rev.user_name}}</span>
+                    </div>
+                    <p>{{rev.review}}.</p>
+                </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="reviewInfo?.length > 0" style="margin-top:20px;">
+        <div class="pagination-area text-center">
+            <pagination-controls responsive="true" previousLabel="Prev" nextLabel="Next"
+                (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+        </div>
+    </div>
+</div>

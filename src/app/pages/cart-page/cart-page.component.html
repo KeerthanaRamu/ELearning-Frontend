@@ -1,0 +1,56 @@
+<!-- <div class="jumbotron jumbotron-fluid" >
+    <div class="container jumbotron jumbotron-fluid">
+      <h1 style="color: white;font-size:40px;font-weight:500;font-family: SuisseWorks,Georgia,Times,times new roman,serif,apple color emoji,segoe ui emoji,segoe ui symbol;padding: 25px;">Shopping Cart</h1>
+    </div>
+  </div> -->
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container bg-primary bg-gradient" >
+        <h1
+            style="color: white;font-size:40px;font-weight:500;font-family: SuisseWorks,Georgia,Times,times new roman,serif,apple color emoji,segoe ui emoji,segoe ui symbol;padding: 25px;">
+            Cart</h1>
+    </div>
+</div>
+<div class="cart-area ptb-100" style="padding-top: 50px !important;">
+    <div class="container">
+            <h3 style="font-size: 18px;font-weight: 400;">{{cartInfo.length}} Course in Cart</h3>
+            <div class="row" style="padding-bottom: 100px;">
+                <div class="col-lg-8 col-md-12">
+                   <table style="width: 100%;">
+                       <tbody>
+                            <tr *ngFor="let crt of cartInfo; let ti=index" style="height:100px">
+                                <td class="product-thumbnail" style="width:100px">
+                                    <a routerLink="/single-products">
+                                        <img src="{{crt.course_image ? crt.course_image :'assets/img/courses_place.png'}}" alt="item">
+                                    </a>
+                                </td>
+                                <td class="product-name">
+                                    <a routerLink="/single-products">{{crt.course_title}}</a>
+                                </td>
+                                
+                                <td class="product-quantity">
+                                    ${{crt.course_price}}
+                                </td>
+                                <td class="product-subtotal">
+                                    <a style="cursor: pointer;" (click)="removeFromCart(crt)" class="remove"><i class='bx bx-trash'></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> 
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-lg-6 col-md-6">
+                            Total:
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <span style="font-weight: 800;">${{totalPrice}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a style="float: right;cursor:pointer" (click)="goToCheckout()" class="default-btn"><i class='bx bx-shopping-bag icon-arrow before'></i><span class="label">Proceed to Checkout</span><i class="bx bx-shopping-bag icon-arrow after"></i></a>
+                    </div>
+                </div>
+            </div>
+           
+    </div>
+</div>

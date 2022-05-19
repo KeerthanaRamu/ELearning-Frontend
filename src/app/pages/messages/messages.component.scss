@@ -1,0 +1,337 @@
+.course_list {
+    padding: 10px;
+    height: 100px;
+    list-style: none;
+    border: 1px solid;
+    margin-top: 10px;
+}
+
+.course_icon {
+    font-size: 60px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+}
+
+.course_title1 {
+    position: relative;
+    bottom: 20px;
+    padding-left: 20px;
+}
+
+.course_title2 {
+    position: relative;
+    bottom: 20px;
+    padding-left: 450px;
+}
+
+.courseform {
+    padding-bottom: 50px;
+}
+
+.add-row {
+    margin-bottom: 10px !important;
+    margin: 10px;
+}
+
+.lecture-box {
+    padding: 10px;
+}
+.publish-li {
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.3;
+}
+
+.section-save-btn {
+    border: 1px solid;
+    cursor: pointer;
+    float: right;
+    padding: 5px;
+    margin-bottom: 10px;
+    background: black;
+    color: white;
+}
+
+.section-cancel-btn {
+    cursor: pointer;
+    float: right;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    color: blue;
+}
+
+.billing-details {
+    .title {
+        margin-bottom: 30px;
+        position: relative;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eeeeee;
+        font: {
+            size: 20px;
+            weight: 600;
+        }
+        &::before {
+            content: "";
+            position: absolute;
+            background: var(--mainColor);
+            bottom: -1px;
+            left: 0;
+            width: 50px;
+            height: 1px;
+        }
+    }
+    .form-group {
+        margin-bottom: 25px;
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font: {
+                weight: 700;
+                size: 15px;
+            }
+            .required {
+                color: red;
+            }
+        }
+        .form-control {
+            background: #f9fafb;
+            border-color: #f3f3f3;
+
+            &::placeholder {
+                color: var(--paragraphColor);
+                transition: var(--transition);
+            }
+            &:focus {
+                background-color: transparent;
+                border-color: #eeeeee;
+
+                &::placeholder {
+                    color: transparent;
+                }
+            }
+        }
+    }
+    .form-check {
+        margin-bottom: 20px;
+
+        .form-check-label {
+            color: var(--blackColor);
+        }
+        label {
+            position: relative;
+            left: -3px;
+            top: 1px;
+            font: {
+                weight: 500;
+            }
+        }
+    }
+    .col-lg-12 {
+        &:last-child {
+            .form-group {
+                margin-bottom: 0;
+            }
+        }
+    }
+    .form-group {
+        .form-select {
+            color: var(--paragraphColor);
+            box-shadow: unset;
+            cursor: pointer;
+            padding: {
+                top: 10px;
+                bottom: 10px;
+                left: 15px;
+                right: 15px;
+            }
+            font: {
+                weight: normal;
+                size: var(--fontSize);
+            }
+        }
+    }
+}
+
+.publish-title {
+    font-size: 18px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    font-weight: 600;
+}
+
+@media only screen and (max-width: 767px) {
+    .course_title1 {
+        position: relative;
+        bottom: 15px;
+        padding-left: 20px;
+    }
+
+    .course_title2 {
+        position: relative;
+        bottom: 15px;
+        padding-left: 40px;
+    }
+
+    .billing-details {
+        .title {
+            font-size: 18px;
+        }
+    }
+    .courseform {
+        padding: 0;
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    .course_title2 {
+        position: relative;
+        bottom: 20px;
+        padding-left: 20px;
+    }
+    .courseform {
+        padding: 0;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .course_title2 {
+        position: relative;
+        bottom: 20px;
+        padding-left: 170px;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .course_title2 {
+        position: relative;
+        bottom: 20px;
+        padding-left: 260px;
+    }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1275px) {
+    .course_title2 {
+        position: relative;
+        bottom: 20px;
+        padding-left: 20px;
+    }
+}
+
+.input-with-icon {
+    /* causes absolute icon div to be positioned correctly */
+    position: relative;
+    box-sizing: border-box;
+}
+
+.input-with-icon .form-control {
+    height: 48px;
+    width: 100%;
+    padding-right: 3.65rem;
+    box-sizing: border-box;
+}
+
+.input-with-icon .icon {
+    position: absolute;
+
+    /* These are set relative to the height of the input box to bound the box neatly inside. This is aesthetic to me but you may change the dimensions of course. */
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.3rem;
+
+    /* content in the icon div is centered, without bootstrap or font-awesome you may wish to add your own text in the span */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* 
+   BELOW PROPERTIES AREN'T CRITICAL FOR DESIRED BEHAVIOUR.
+   THEY ARE PURELY FOR DEMONSTRATION PURPOSES
+  */
+
+.input-with-icon .form-control {
+    padding-left: 1.2rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+}
+
+.input-with-icon .icon {
+    border: 1px solid #cccccc;
+    background-color: #cccccc;
+}
+.upload-group {
+    a {
+        color: var(--blackColor);
+        border: 1px solid #eeeeee;
+        position: relative;
+        border-radius: 3px 3px 0 0;
+        font: {
+            size: var(--fontSize);
+            weight: 600;
+        }
+        i {
+            font-size: 18px;
+            position: absolute;
+            left: 25px;
+            top: 47%;
+            transform: translateY(-47%);
+        }
+        &.active,
+        &:hover {
+            background-color: var(--mainColor);
+            color: var(--whiteColor);
+            border-color: var(--mainColor);
+        }
+    }
+}
+
+.ng-autocomplete {
+    width: 100%;
+    display: table;
+}
+
+.message {
+    background-color: #fff;
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%),
+        0 2px 1px -1px rgb(0 0 0 / 12%);
+}
+
+.msg-title {
+    cursor: pointer;
+    height: 50px;
+    margin-top: 30px;
+    font-family: SuisseWorks, Georgia, Times, times new roman, serif,
+        apple color emoji, segoe ui emoji, segoe ui symbol;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.25;
+    letter-spacing: -0.5px;
+}
+
+.msg-btn {
+    float: right;
+    color: black;
+    background-color: white;
+    font-weight: 500;
+    border: 1px solid;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.conv-title {
+    height: 60px;
+    padding: 10px;
+    border-bottom: 1px solid #d1d7dc;
+}

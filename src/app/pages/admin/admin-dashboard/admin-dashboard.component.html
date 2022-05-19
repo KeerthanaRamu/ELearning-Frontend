@@ -1,0 +1,254 @@
+<app-admin></app-admin>
+
+<div class="container">
+    <div class="courses-categories-slides">
+        <owl-carousel-o [options]="categoriesSlides">
+            <ng-template carouselSlide>
+                <div class="single-categories-courses-box mb-30" (click)="getCousesDetails()"> 
+                    <div class="icon">
+                        <i class='bx bxs-book-open'></i>
+                    </div>
+                    <h3>Total Courses</h3>
+                    <span>{{totalCourse}}</span>
+                    <!-- <span style="font-size: 13px;font-weight: 400;"> ${{monthRevenue > 0 ? monthRevenue : '0.00'}} this month</span> -->
+                    <a style="cursor: pointer;" class="link-btn"></a>
+                </div>
+            </ng-template>
+            <ng-template carouselSlide>
+                <div class="single-categories-courses-box mb-30" (click)="getInstructorDetails()">
+                    <div class="icon">
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <h3>Total Instructors</h3>
+                    <span>{{totalInstructor}}</span>
+                    <!-- <span style="font-size: 13px;font-weight: 400;"> {{monthEnroll}} this month</span> -->
+                    <a style="cursor: pointer;" class="link-btn"></a>
+                </div>
+            </ng-template>
+            <ng-template carouselSlide>
+                <div class="single-categories-courses-box mb-30" (click)="getStudentDetails()">
+                    <div class="icon">
+                        <i class='bx bxs-user'></i>
+                    </div>
+                    <h3>Total Students</h3>
+                    <span>{{totalStudent}}</span>
+                    <!-- <span style="font-size: 13px;font-weight: 400;"> {{monthRating}} this month</span> -->
+                    <a style="cursor: pointer;" class="link-btn"></a>
+                </div>
+            </ng-template>
+        </owl-carousel-o>
+    </div>
+    <div *ngIf="showCourses"  style="margin-bottom: 20px;">
+        <div class="myDashboard-content">
+            <h5 style="text-align: center;margin-bottom: 15px;">Course List</h5>
+            <div class="orders-table table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th></th>
+                            <th>Course Title</th>
+                            <th>Rating</th>
+                            <th>Category</th>
+                            <th>SubCategory</th>
+                            <th>Level</th>
+                            <th>Price</th>
+                            <th>Actions
+                                <span style="font-size: 12px;">(View Instructor/Students)</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let coursedt of courseDetails | paginate : {
+                            id: 'paginationCourse',
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count};let i=index;">
+                            <td>{{i+1}}</td>
+                            <td style="width: 10%;"><img src="{{coursedt.course_image ? coursedt.course_image : 'assets/img/courses_place.png'}}"></td>
+                            <td>{{coursedt.course_title}}</td>
+                            <td><ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="coursedt.averageRating"></ngx-stars>({{coursedt.ratingCount}} Rating)</td>
+                            <td>{{coursedt.category}}</td>
+                            <td>{{coursedt.subcategory ? coursedt.subcategory :'-'}}</td>
+                            <td>{{coursedt.level ? coursedt.level :'-'}}</td>
+                            <td>${{coursedt.course_price}}</td>
+                            <td>
+                                <a style="cursor: pointer;margin-right: 10px;" data-bs-toggle="modal" data-bs-target="#viewInstructor" (click)="getInstructorDetail(coursedt)" class="view-button"><i class="fa fa-eye"></i></a>
+                                <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#viewStudentDetail" class="view-button" (click)="getStudentDetail(coursedt)" ><i class="fa fa-eye"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="showCourses" style="margin-top:20px;">
+            <div class="pagination-area text-center">
+                <pagination-controls id="paginationCourse" responsive="true" previousLabel="Prev" nextLabel="Next"
+                    (pageChange)="onTableDataChangeCourses($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showInstructor"  style="margin-bottom: 20px;">
+        <div class="myDashboard-content">
+            <h5 style="text-align: center;margin-bottom: 15px;">Instructor List</h5>
+            <div class="orders-table table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th></th>
+                            <th>Instructor Name</th>
+                            <th>Head line</th>
+                            <th>Rating</th>
+                            <th>Website</th>
+                            <th>Twitter</th>
+                            <th>Linked In</th>
+                            <th>Facebook</th>
+                            <th>Youtube</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let insdt of instructorDetails | paginate : {
+                            id: 'paginationIns',
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count};let i=index;">
+                            <td>{{i+1}}</td>
+                            <td style="width: 20%;"><img style="border-radius: 50px;" src="{{insdt.selfie_image ? insdt.selfie_image : '../../../assets/img/user_img.png'}}"></td>
+                            <td>{{insdt.user_name}}</td>
+                            <td>{{insdt.head_line ? insdt.head_line :'-'}}</td>
+                            <td><ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="insdt.averageRating"></ngx-stars>({{insdt.ratingCount}} Rating)</td>
+                            <td>{{insdt.website ? insdt.website :'-'}}</td>
+                            <td>{{insdt.twitter ? insdt.twitter : '-'}}</td>
+                            <td>{{insdt.linkedin ? insdt.linkedin : '-'}}</td>
+                            <td>{{insdt.facebook ? insdt.facebook : '-'}}</td>
+                            <td>{{insdt.youtube ? insdt.youtube : '-'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="showInstructor" style="margin-top:20px;">
+            <div class="pagination-area text-center">
+                <pagination-controls id="paginationIns" responsive="true" previousLabel="Prev" nextLabel="Next"
+                    (pageChange)="onTableDataChangeInstructor($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="showStudent"  style="margin-bottom: 20px;">
+        <div class="myDashboard-content">
+            <h5 style="text-align: center;margin-bottom: 15px;">Student List</h5>
+            <div class="orders-table table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th></th>
+                            <th>Student Name</th>
+                            <th>Email Id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let stud of StudentDetails | paginate : {
+                            id: 'paginationStud',
+                            itemsPerPage: tableSize,
+                            currentPage: page,
+                            totalItems: count};let i=index;">
+                            <td>{{i+1}}</td>
+                            <td style="width: 5%;"><img style="border-radius: 50px;" src="{{stud.selfie_image ? stud.selfie_image : '../../../assets/img/user_img.png'}}"></td>
+                            <td>{{stud.user_name}}</td>
+                            <td>{{stud.email_id ? stud.email_id :'-'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="showStudent" style="margin-top:20px;">
+            <div class="pagination-area text-center">
+                <pagination-controls id="paginationStud" responsive="true" previousLabel="Prev" nextLabel="Next"
+                    (pageChange)="onTableDataChangeStudent($event)">
+                </pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  -->
+<div class="modal fade" id="viewInstructor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Instructor Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="myDashboard-content">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width: 20%;"><img style="border-radius: 50px;" src="{{InstructorViewDetails?.selfie_image ? InstructorViewDetails?.selfie_image : '../../../assets/img/user_img.png'}}"></td>
+                            <td><span style="font-size: 16px;font-weight: 700;">{{InstructorViewDetails?.user_name}}</span><br/>
+                                <!-- <ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="InstructorViewDetails?.averageRating"></ngx-stars> -->
+                                <span>{{InstructorViewDetails?.head_line}}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="viewStudentDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Students</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="myDashboard-content">
+                <!-- <div class="orders-table table-responsive"> -->
+                    <h4 *ngIf="studentViewDetails?.length == 0">No Students Found!!</h4>
+                    <table class="table table-striped" *ngIf="studentViewDetails?.length >0">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let studview of studentViewDetails | paginate : {
+                                id: 'paginationCourseView',
+                                itemsPerPage: viewtableSize,
+                                currentPage: viewPage,
+                                totalItems: viewcount};let j=index;">
+                                <td style="width: 20%;"><img style="border-radius: 50px;" src="{{studview.selfie_image ? studview.selfie_image : '../../../assets/img/user_img.png'}}"></td>
+                                <td>{{studview.user_name}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <!-- </div> -->
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:20px;" *ngIf="studentViewDetails?.length >0">
+                <div class="pagination-area text-center">
+                    <pagination-controls id="paginationCourseView" responsive="true" previousLabel="Prev" nextLabel="Next"
+                        (pageChange)="onTableDataChangeStudentView($event)">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

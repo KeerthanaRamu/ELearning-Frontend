@@ -1,0 +1,24 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="container bg-primary bg-gradient" >
+        <h1
+            style="color: white;font-size:40px;font-weight:500;font-family: SuisseWorks,Georgia,Times,times new roman,serif,apple color emoji,segoe ui emoji,segoe ui symbol;padding: 25px;">
+            My Dashboard</h1>
+    </div>
+</div>
+<div class="my-dashboard-area ptb-100" style="padding-top: 50px !important;">
+    <div class="container">
+        <div class="myDashboard-navigation">
+            <ul style="list-style: none;line-height: 40px;">
+                <li><a routerLink="/admin/dashboard" [ngClass]="{'active': selectedItem.firstLi == 1}"
+                    (click)="listClick( 1, 'firstLi')"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li><a routerLink="/admin/category" [ngClass]="{'active': selectedItem.firstLi == 2}"
+                    (click)="listClick( 2, 'firstLi')"><i class='bx bx-book-open'></i> Create Category</a></li>
+                <li><a routerLink="/admin/sub-category" [ngClass]="{'active': selectedItem.firstLi == 3}"
+                    (click)="listClick( 3, 'firstLi')"><i class='bx bx-book-open'></i> Create SubCategory</a></li>
+                <li ><a routerLink="/admin/create-course" [ngClass]="{'active': selectedItem.firstLi == 4}"
+                    (click)="listClick( 4, 'firstLi')"><i
+                            class='bx bx-book-open'></i>Create Course</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

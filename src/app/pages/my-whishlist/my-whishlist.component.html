@@ -1,0 +1,54 @@
+<div class="jumbotron jumbotron-fluid" >
+    <div class="container bg-primary bg-gradient">
+      <h1 style="color: white;font-size:40px;font-weight:500;font-family: SuisseWorks,Georgia,Times,times new roman,serif,apple color emoji,segoe ui emoji,segoe ui symbol;padding: 25px;">My WishList</h1>
+    </div>
+  </div>
+
+  <section class="courses-area pt-100" style="padding-top: 50px !important;" >
+    <div class="container">
+                <div class="courses-area">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6" *ngFor="let learndt of wishList; let i=index">
+                                <form>
+                                <div class="single-courses-box mb-30" style="cursor: pointer;">
+                                    <div>
+                                        <div class="courses-image">
+                                            <a routerLink="/single-courses" class="d-block"><img src="{{learndt.course_image ? learndt.course_image :'assets/img/courses_place.png'}}" style="height: 205px;width: 100%;" alt="image"></a>
+                                            <div class="courses-tag">
+                                                <a routerLink="/courses-4-columns-style-1" class="d-block">{{learndt.category}}</a>
+                                            </div>
+                                        </div>
+                                        <div class="courses-content">
+                                            <h3><a routerLink="/single-courses" class="d-inline-block">{{learndt.course_title}}</a></h3>
+                                            <span>{{learndt.course_subtitle}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="courses-box-footer">
+                                        <ul>
+                                            <li class="students-number" style="cursor: pointer;">
+                                                <div (click)="addToCart(learndt)" *ngIf="learndt.funcName != ''">
+                                                    <i class="bx bx-cart-alt"></i>
+                                                    {{learndt.funcName}}
+                                                </div>
+                                                
+                                            </li>
+                                            <li class="courses-price">
+                                                <i  [ngClass]="learndt.wishStatus == 1 ? 'bx bxs-heart' : 'bx bx-heart'" (click)="setWishlist(learndt)"></i>
+                                            </li>
+                                            <li class="courses-price">
+                                                ${{learndt.course_price}}
+                                            </li>
+                                        </ul>
+                                        
+                                     </div>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+ 

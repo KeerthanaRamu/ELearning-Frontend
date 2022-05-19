@@ -1,0 +1,100 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true">
+</ngx-spinner>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container bg-primary bg-gradient" >
+        <h1
+            style="color: white;font-size:40px;font-weight:500;font-family: SuisseWorks,Georgia,Times,times new roman,serif,apple color emoji,segoe ui emoji,segoe ui symbol;padding: 25px;">
+            Instructor Details</h1>
+    </div>
+</div>
+<div class="instructor-details-area pt-100 pb-70" style="padding-top: 15px;">
+    <div class="container">
+        <div class="instructor-details-desc">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="instructor-details-sidebar">
+                        <img src="{{userInfo?.selfie_image ? userInfo?.selfie_image :  '../../../assets/img/user_img.png'}}" width="356" height="356" alt="image">
+                        <div class="instructor-details-meta">
+                        </div>
+                        <ul class="social-link">
+                            <li><a href="{{userInfo.facebook}}" class="d-block facebook" target="_blank"><i
+                                        class='bx bxl-facebook'></i></a>
+                            </li>
+                            <li><a href="{{userInfo.twitter}}" class="d-block twitter" target="_blank"><i
+                                        class='bx bxl-twitter'></i></a>
+                            </li>
+                            <li><a href="{{userInfo.youtube}}" class="d-block youtube" target="_blank"><i
+                                        class='bx bxl-youtube'></i></a></li>
+                            <li><a href="{{userInfo.linkedin}}" class="d-block linkedin" target="_blank"><i
+                                        class='bx bxl-linkedin'></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8">
+                    <div class="instructor-details">
+                        <h3>{{userInfo.user_name}}</h3>
+                        <span class="sub-title">{{userInfo?.head_line}}</span>
+                        <p>{{userInfo?.biography}}.</p>
+                        <div class="instructor-details-info">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12">
+                                    <h6>Total students</h6>
+                                    <span>{{studentCount}}</span>
+                                </div>
+                                <div class="col-lg-6 col-md-12">
+                                    <h6>Total Reviews</h6>
+                                    <span>{{reviewCount}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-title text-start">
+            <h2>Courses by {{userInfo?.user_name}}</h2>
+        </div>
+        <div class="row">
+            <div class="courses-categories-slides" style="padding-top: 10px !important;">
+                <!-- <div class="container-fluid"> -->
+                <owl-carousel-o [options]="coursesSlides">
+                    <ng-template carouselSlide class="col-lg-3 col-md-6"
+                        *ngFor="let coursedt of courseInfo; let i=index">
+                        <!-- <div > -->
+                        <div class="single-courses-box mb-30">
+                            <div class="courses-image">
+                                <a (click)="goToDetailedPage(coursedt)" style="cursor: pointer;" class="d-block"><img
+                                        src="{{coursedt.course_image ? coursedt.course_image :'assets/img/courses_place.png'}}"
+                                        style="height: 135px;" alt="image"></a>
+                                <div class="courses-tag">
+                                    <a  class="d-block">{{coursedt.category}}</a>
+                                </div>
+                            </div>
+                            <div class="courses-content">
+                                <h3><a 
+                                        class="d-inline-block">{{coursedt.course_title}}</a>
+                                </h3>
+                                <div class="course-author d-flex align-items-center">
+                                    <span>{{userInfo.user_name}}</span>
+                                </div>
+                                <div class="courses-rating">
+                                    <div class="review-stars-rated">
+                                        <ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="coursedt.averageRating"></ngx-stars>
+    
+                                        <!-- <ngx-star-rating class="frontview" [disabled]="true" [(ngModel)]="coursedt.averageRating"></ngx-star-rating> -->
+                                    </div>
+                                    <div class="rating-total" *ngIf="coursedt.averageRating > 0">
+                                        {{coursedt.averageRating}} ({{coursedt.ratingCount}} Rating)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </ng-template>
+                </owl-carousel-o>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</div>

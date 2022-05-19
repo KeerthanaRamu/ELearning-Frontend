@@ -1,0 +1,131 @@
+<div class="container">
+    <div class="myDashboard-navigation">
+        <div style="padding-left: 0rem !important;">
+            <div class="checkout-area courseform">
+                <div class="container">
+                    <form>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12" >
+                                <div class="billing-details" style="background-color: transparent;border-bottom: 1px solid #d1d7dc;">
+                                    <h3 class="title" class="msg-title">
+                                        Messages
+                                    </h3>
+                                    <span style="font-size: 16px;">You have {{messageCount}} unread messages.</span>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12" >
+                                <button class="msg-btn" (click)="composeNewOne()" style="float: right">Compose</button>
+                            </div>
+                            <div class="col-lg-4 col-md-12" style="border: 1px solid #d1d7dc;overflow: auto;height: 500px;">
+                                <div class="row">
+                                    <h6 class="font-weight-bold text-center text-lg-left" style="padding:10px;border-bottom: 1px solid #d1d7dc;">Chats</h6>
+                                    <div class="active grey lighten-3" style="border-bottom: 1px solid #d1d7dc;margin-bottom: 0.5rem;" *ngFor="let chater of bindchatdata">
+                                            <a class="d-flex" (click)="getchatmssg(chater)" style="cursor:pointer;">
+                                            <img width="32" height="32" src="{{(chater.receiverprofile != 'undefined' && chater.receiverprofile != null) ? chater.receiverprofile : 'assets/img/download.png'}}"   alt="k" class="avatar rounded-circle d-flex align-self-center mr-2 z-depth-1" style="margin-right: 1.5rem;margin-bottom: 40px;">
+                                            <div class="text-small">
+                                                <strong style="padding-right: 10px;">{{chater.receivername}}</strong> <span class="badge badge-light" *ngIf="chater.newmsg>0" style="background-color: blue; color: white; border-radius: 18px;">{{chater.newmsg}}</span><br/>
+                                                <p class="last-message" style="color: black;">{{chater.chatmsg}}</p>
+                                            </div> 
+                                            </a>
+                                        </div> 
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-8 col-md-12" style="border: 1px solid #d1d7dc;overflow: auto;height: 500px;">
+                                <div class="billing-details" *ngIf="showNewMsg">
+                                    <h3 class="title" style="padding-top: 35px;">New Message</h3>
+                                    <!-- <a (click)="showCourse()"  style="float: right;cursor: pointer;"><i class='bx bx-left-arrow-alt'></i><span class="label">Back To Courses</span></a> -->
+                                    <form [formGroup]="messageForm">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12">
+                                                <div class="form-group add-row">
+                                                    <div class="ng-autocomplete">
+                                                        <ng-autocomplete 
+                                                          historyIdentifier="instructorList" 
+                                                          placeholder="Enter the Instructor Name"
+                                                          (selected)='selectEvent($event)'
+                                                          [data]="instructorList$ | async" 
+                                                          [searchKeyword]="keyword" 
+                                                          [itemTemplate]="itemTemplate" 
+                                                          [notFoundTemplate]="notFoundTemplate"
+                                                          (inputChanged)=search$.next($event)>
+                                                        </ng-autocomplete>
+                                                    
+                                                        <ng-template #itemTemplate let-item>
+                                                          <a [innerHTML]="item.user_name"></a>
+                                                        </ng-template>
+                                                    
+                                                        <ng-template #notFoundTemplate let-notFound>
+                                                          <div [innerHTML]="notFound"></div>
+                                                        </ng-template>
+                                                      </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12" style="margin: 10px;" *ngIf="selectedId">
+                                                <div class="form-group">
+                                                    <label>Message<span class="required">*</span></label>
+                                                    <textarea type="text" formControlName="message"
+                                                         class="form-control message"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12"  *ngIf="selectedId">
+                                                <a class="default-btn" (click)="setMessageInfo()"
+                                                style="border: 1px solid;cursor: pointer;float: right;"><i
+                                                class='bx bx-right-arrow-alt icon-arrow before'></i><span
+                                                class="label">Send</span><i
+                                                class="bx bx-right-arrow-alt icon-arrow after"></i></a>
+                                                <button class="msg-btn" (click)="backToChat()" style="float: right;margin:2px;">Cancel</button>
+                                            </div>
+
+                                         </div>
+                                     </form>
+                                </div>
+                                <div class="chat-message" *ngIf="showSelected"> 
+                                    <ul class="list-unstyled chat-1 scrollbar-light-blue" style="margin-bottom: 0rem;">
+                                        <li class="conv-title">
+                                            <p style="padding: 5px;">Conversation with {{conversationWith}}</p>
+                                        </li>
+                                        <div *ngIf="chat" #target style="margin: 10px;">
+                                            <li *ngFor="let message of chat" style="height: 65px;">
+                                                <div class="d-flex pull-right">
+                                                    <p class="chat-class" *ngIf="message.from_chat != null" style="margin: 10px;">
+                                                        {{message.from_chat == null ? '': message.from_chat}}
+                                                      </p>
+                                                    <img width="32" height="32" style="margin: 10px;height: 100%;" *ngIf="message.from_chat != null" src="{{(message.fromprofile != 'undefined' && message.fromprofile != null) ? message.fromprofile : 'assets/img/download.png'}}" alt="avatar" class="avatar rounded-circle">
+                                                </div>
+                                                <div class="d-flex">
+                                                    <img width="32" height="32" style="margin: 10px;height: 100%;" *ngIf="message.to_chat != null" src="{{(message.toprofile != 'undefined' && message.toprofile != null) ? message.toprofile : 'assets/img/download.png'}}"  alt="avatar" class="avatar rounded-circle">
+                                                    <p class="chat-class" *ngIf="message.to_chat != null" style="margin: 10px;">
+                                                        {{message.to_chat == null ? '': message.to_chat}}
+                                                    </p> 
+                                                </div>
+                                            </li> 
+                                        </div>
+                                        <div>
+                                            <form [formGroup]="messageForm">
+                                                <div class="row">
+                                                    <div class="col-lg-10 col-md-10">
+                                                        <div class="form-group">
+                                                            <label></label>
+                                                            <textarea type="text" formControlName="message" placeholder="Type your message..."
+                                                                class="form-control message"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2 col-md-2" style="height: 100%;margin-top: 25px;">
+                                                        <button class="msg-btn" (click)="setConversationInfo()" style="float: right;width: 100%;">Send</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</div>

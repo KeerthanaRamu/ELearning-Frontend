@@ -1,0 +1,79 @@
+<section class="mission-area ptb-100" style="padding-top: 30% !important;">
+    <div class="container">
+    </div>
+</section>
+
+<section class="courses-area pt-100" style="padding-top: 60px !important;">
+    <div class="container">
+        <div class="section-title text-start">
+            <span class="sub-title">Discover Courses</span>
+            <h2>Our Popular Online Courses</h2>
+        </div>
+        <div class="courses-categories-slides" style="padding-top: 10px !important;">
+            <!-- <div class="container-fluid"> -->
+            <owl-carousel-o [options]="coursesSlides">
+                <ng-template carouselSlide class="col-lg-3 col-md-6" *ngFor="let coursedt of coursesList; let i=index">
+                    <!-- <div > -->
+                    <div class="single-courses-box mb-30">
+                        <div class="courses-image">
+                            <a (click)="goToDetailedPage(coursedt)" style="cursor: pointer;" class="d-block"><img
+                                    src="{{coursedt.course_image ? coursedt.course_image :'assets/img/courses_place.png'}}"
+                                    style="height: 135px;" alt="image"></a>
+                            <div class="courses-tag">
+                                <a routerLink="/courses-4-columns-style-1" class="d-block">{{coursedt.category}}</a>
+                            </div>
+                        </div>
+                        <div class="courses-content">
+                            <h3><a routerLink="/courses-details" class="d-inline-block">{{coursedt.course_title}}</a>
+                            </h3>
+                            <div class="course-author d-flex align-items-center">
+                                <span>{{coursedt.user_name}}</span>
+                            </div>
+                            <div class="courses-rating">
+                                <div class="review-stars-rated">
+                                    <ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="coursedt.averageRating"></ngx-stars>
+
+                                    <!-- <ngx-star-rating class="frontview" [disabled]="true" [(ngModel)]="coursedt.averageRating"></ngx-star-rating> -->
+                                </div>
+                                <div class="rating-total" *ngIf="coursedt.averageRating > 0">
+                                    {{coursedt.averageRating}} ({{coursedt.ratingCount}} Rating)
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="courses-box-footer">
+                            <ul>
+                                <li class="students-number" style="cursor: pointer;">
+                                    <div (click)="addToCart(coursedt)" *ngIf="coursedt.funcName != ''">
+                                        <i class="bx bx-cart-alt"></i>
+                                        {{coursedt.funcName}}
+                                    </div>
+
+                                </li>
+                                <li class="courses-price">
+                                    <i [ngClass]="coursedt.wishStatus == true ? 'bx bxs-heart' : 'bx bx-heart'"
+                                        (click)="setWishlist(coursedt)"></i>
+                                </li>
+                                <li class="courses-price">
+                                    ${{coursedt.course_price}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                </ng-template>
+            </owl-carousel-o>
+            <!-- </div> -->
+        </div>
+
+    </div>
+</section>
+
+<div class="courses-categories-area bg-image pt-100 pb-70" style="padding-top: 10px !important;">
+    <div class="container">
+        <div class="section-title text-start">
+            <h2>Top Categories</h2>
+        </div>
+        <app-categories-style-one></app-categories-style-one>
+    </div>
+</div>
+<app-become-instructor-partner></app-become-instructor-partner>

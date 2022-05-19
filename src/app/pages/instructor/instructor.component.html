@@ -1,0 +1,65 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="container bg-primary bg-gradient" >
+        <h1
+            style="color: white;font-size:40px;font-weight:500;font-family: SuisseWorks,Georgia,Times,times new roman,serif,apple color emoji,segoe ui emoji,segoe ui symbol;padding: 25px;">
+            Instructor</h1>
+    </div>
+</div>
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true">
+    <!-- <p style="color: white" > Loading... </p> -->
+</ngx-spinner>
+
+<div class="my-dashboard-area ptb-100" style="padding-top: 50px !important;" *ngIf="userData">
+    <div class="container">
+        <div class="myDashboard-profile">
+            <div class="row align-items-center">
+                <div class="col-lg-4 col-md-5" style="width: 22.333333% !important;">
+                    <div class="profile-image">
+                        <img src="{{userData?.selfie_image ? userData?.selfie_image : '../../../assets/img/user_img.png'}}" width="231" height="231" alt="image">
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-7">
+                    <div class="profile-content">
+                        <h3>{{userData?.user_name}}</h3>
+                        <p *ngIf="userData?.head_line">{{userData?.head_line}}</p>
+                        <ul class="contact-info">
+                            <li><i class='bx bx-envelope'></i> <a>{{userData?.email_id}}</a></li>
+                            <li *ngIf="userData?.mobile_no"><i class='bx bx-phone'></i> <a>{{userData?.mobile_no}}</a>
+                            </li>
+                        </ul>
+                        <ul class="social">
+                            <li><a href="{{userData?.facebook}}" class="d-block facebook" target="_blank"><i
+                                        class='bx bxl-facebook'></i></a>
+                            </li>
+                            <li><a href="{{userData?.twitter}}" class="d-block twitter" target="_blank"><i
+                                        class='bx bxl-twitter'></i></a>
+                            </li>
+                            <li><a href="{{userData?.youtube}}" class="d-block youtube" target="_blank"><i
+                                        class='bx bxl-youtube'></i></a></li>
+                            <li><a href="{{userData?.linkedin}}" class="d-block linkedin" target="_blank"><i
+                                        class='bx bxl-linkedin'></i></a>
+                            </li>
+                        </ul>
+                        <a (click)="logOut()" class="myDashboard-logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="myDashboard-navigation">
+            <ul>
+                <li><a routerLink="/instructor/dashboard" [ngClass]="{'active': selectedItem.firstLi == 1}"
+                        (click)="listClick( 1, 'firstLi')"><i class='bx bxs-dashboard'></i> Dashboard</a></li>
+                <li><a routerLink="/instructor/courses" [ngClass]="{'active': selectedItem.firstLi == 2}"
+                        (click)="listClick( 2, 'firstLi')"><i class='bx bx-book-open'></i> Courses</a></li>
+                <li><a routerLink="/instructor/students" [ngClass]="{'active': selectedItem.firstLi == 3}"
+                        (click)="listClick( 3, 'firstLi')"><i class='bx bx-download'></i> Students</a></li>
+                <li><a routerLink="/instructor/reviews" [ngClass]="{'active': selectedItem.firstLi == 4}"
+                        (click)="listClick( 4, 'firstLi')"><i class='bx bx-home-alt'></i> Reviews</a></li>
+                <li><a routerLink="/instructor/communication" [ngClass]="{'active': selectedItem.firstLi == 5}"
+                        (click)="listClick( 5, 'firstLi')"><i class='bx bx-edit'></i> Communication</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<router-outlet></router-outlet>

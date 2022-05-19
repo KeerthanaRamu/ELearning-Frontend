@@ -1,0 +1,80 @@
+<div class="jumbotron jumbotron-fluid">
+    <div class="container bg-primary bg-gradient">
+      <h1 style="color: white;font-size:40px;font-weight:500;font-family: SuisseWorks,Georgia,Times,times new roman,serif,apple color emoji,segoe ui emoji,segoe ui symbol;padding: 25px;">My Learning</h1>
+    </div>
+  </div>
+
+  <section class="courses-area pt-100" style="padding-top: 50px !important;">
+    <div class="container">
+                <div class="courses-area">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6" *ngFor="let learndt of learningList; let i=index">
+                                <div class="single-courses-box mb-30" style="cursor: pointer;">
+                                    <div (click)="showLearningInfo(learndt)">
+                                        <div class="courses-image">
+                                            <a routerLink="/single-courses" class="d-block"><img src="{{learndt.course_image ? learndt.course_image :'assets/img/courses_place.png'}}" style="height: 205px;width: 100%;" alt="image"></a>
+                                            <div class="courses-tag">
+                                                <a routerLink="/courses-4-columns-style-1" class="d-block">{{learndt.category}}</a>
+                                            </div>
+                                        </div>
+                                        <div class="courses-content">
+                                            <h3><a routerLink="/single-courses" class="d-inline-block">{{learndt.course_title}}</a></h3>
+                                            <span style="font-size: 13px;">{{learndt.course_subtitle}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="courses-box-footer">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6">
+                                                <h6 style="font-size: 12px;" *ngIf="learndt.lectureStatus == 'new'">START COURSE</h6>
+                                                <h6 style="font-size: 12px;" *ngIf="learndt.lectureStatus == 'start'">IN PROGRESS</h6>
+                                            </div>
+                                           
+                                            <div class="col-lg-6 col-md-6"  *ngIf="learndt.rating > 0">
+                                                <!-- <div class="review-stars-rated"> -->
+                                                    <!-- <ngx-star-rating class="frontview" [disabled]="true" [(ngModel)]="learndt.rating"></ngx-star-rating> -->
+                                                    <ngx-stars [readonly]="true" class="frontview" [size]="1" [maxStars]="5" [color]="'#f2b827'" [initialStars]="learndt.rating"></ngx-stars>
+                                            </div> 
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6"></div>
+                                            <h6 class="col-lg-6 col-md-6" style="font-size: 12px;" *ngIf="learndt.lectureStatus == 'start'" (click)="getRatingCourse(learndt)" data-bs-toggle="modal" data-bs-target="#ratingBackdrop">{{learndt.rating > 0 ? 'Edit' :'Leave'}} Your Rating</h6>    
+                                        </div>
+                                        
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+ 
+
+<div class="modal fade" id="ratingBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form class="edit-account" [formGroup]="ratingForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Rating</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="height: 300px;">
+            <div class="row learning-rating">
+                <div class="col-lg-2 col-md-2"></div>
+                <div class="col-lg-8 col-md-8">
+                <ngx-star-rating formControlName="rating" [id]="'rating'"></ngx-star-rating>
+                <textarea style="height: 100% !important;border: 1px solid grey;" formControlName="review" placeholder="Tell us about your own personal experience taking this course. Was it a good match for you?" class="form-control"></textarea>
+                </div>
+                <div class="col-lg-2 col-md-2"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="closeModal" class="btn btn-primary" data-bs-dismiss="modal" (click)="updateRatingInfo()">Update</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>

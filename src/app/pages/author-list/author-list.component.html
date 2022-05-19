@@ -1,0 +1,27 @@
+<div class="courses-categories-slides">
+    <owl-carousel-o [options]="tutorsSlides">
+        <ng-template carouselSlide *ngFor="let tutor of authorInfo;let i=index">
+            <div class="single-categories-courses-box mb-30" style="cursor:pointer;" (click)="getAuthorInfo(tutor)"
+                style="background-color: white !important;border: 1px solid #d1d7dc;height: 150px;">
+                <div class="row">
+                    <div style="width: 35%;">
+                        <img src="{{tutor.selfie_image ? tutor.selfie_image : '../../../assets/img/user_img.png'}}"
+                            class="rounded-circle mr-2" style="width: 6.4rem;height: 6.4rem;" alt="">
+                    </div>
+                    <div style="text-align: initial;width: 60%;">
+                        <div style="font-weight: 600;">{{tutor.user_name}}</div>
+                        <div>{{tutor.head_line}}</div>
+                        <div class="courses-rating">
+                            <div class="review-stars-rated">
+                                5.0 <i class='bx bxs-star'></i> Instructor rating
+                            </div>
+                        </div>
+                        <div>{{tutor.studentCount}} Students</div>
+                        <div>{{tutor.courseCount}} Courses</div>
+                    </div>
+                </div>
+
+            </div>
+        </ng-template>
+    </owl-carousel-o>
+</div>

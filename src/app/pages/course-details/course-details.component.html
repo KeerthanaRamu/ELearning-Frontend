@@ -1,0 +1,177 @@
+<div class="courses-details-area pt-100 pb-70" style="padding-top: 30px;">
+    <div class="container">
+        <div class="courses-details-header">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="courses-title">
+                        <h2>{{courseInfo?.course_title}}</h2>
+                        <p>{{courseInfo?.course_subtitle}}.</p>
+                    </div>
+                    <!-- <div class="courses-meta">
+                        <ul>
+                            <li>
+                                <i class='bx bx-folder-open'></i>
+                                <span>Category</span>
+                                <a routerLink="/single-courses">Design</a>
+                            </li>
+                            <li>
+                                <i class='bx bx-group'></i>
+                                <span>Students Enrolled</span>
+                                <a routerLink="/single-courses">813,454</a>
+                            </li>
+                            <li>
+                                <i class='bx bx-calendar'></i>
+                                <span>Last Updated</span>
+                                <a routerLink="/single-courses">01/14/2019</a>
+                            </li>
+                        </ul>
+                    </div> -->
+                </div>
+                <div class="col-lg-4">
+                    <div class="courses-price">
+                        <div class="courses-review">
+                            <div class="review-stars">
+                                <!-- <ngx-star-rating class="frontview" [disabled]="true" [(ngModel)]="coursedt.averageRating"></ngx-star-rating> -->
+                                <ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="courseInfo.averageRating"></ngx-stars>
+                            </div>
+                            <span class="reviews-total d-inline-block">({{courseInfo?.reviewCount}} reviews)</span>
+                        </div>
+                        <div class="price">${{courseInfo?.course_price}}</div>
+                        <a *ngIf="cartTitle != ''" (click)="addToCart(courseInfo)" style="cursor: pointer;"
+                            class="default-btn"><i class='bx bx-paper-plane icon-arrow before'></i><span
+                                class="label">{{cartTitle}}</span><i class="bx bx-paper-plane icon-arrow after"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="courses-details-image text-center" >
+                    <img src="{{courseInfo?.course_image ? courseInfo?.course_image :'assets/img/courses_place.png'}}"
+                      style="width: 80%;"  alt="image">
+                </div>
+                <div class="courses-details-desc">
+                    <h3>What you'll learn</h3>
+                    <div class="why-you-learn">
+                        <ul >
+                            <li *ngFor="let obj of courseObjective">
+                                <span>
+                                    <i class='bx bx-check'></i>
+                                    {{obj.objective}}
+                                </span>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <h3>Requirements</h3>
+                    <ul class="requirements-list" *ngFor="let req of courseRequirement">
+                        <li>{{req.requirement}}</li>
+                    </ul>
+
+                    <h3>Who this course is for:</h3>
+                    <ul class="audience-list" *ngFor="let crse of courseFor">
+                        <li>{{crse.coursefor}}</li>
+                    </ul>
+                    <h3>Meet your instructor</h3>
+                    <div class="courses-author">
+                        <div class="author-profile-header"></div>
+                        <div class="author-profile" style="cursor: pointer;" (click)="getAuthorInfo(instructorInfo)">
+                            <div class="author-profile-title">
+                                <img src="{{instructorInfo?.selfie_image ? instructorInfo?.selfie_image : '../../../assets/img/user_img.png'}}" class="shadow-sm rounded-circle" alt="image">
+                                <div class="author-profile-title-details d-flex justify-content-between">
+                                    <div class="author-profile-details">
+                                        <h4>{{instructorInfo?.user_name}}</h4>
+                                        <span class="d-block">{{instructorInfo?.head_line}}</span>
+                                    </div>
+
+                                    <div class="author-profile-raque-profile">
+                                        <!-- <a routerLink="/single-instructor" class="d-inline-block">View Profile on
+                                            Ednuv</a> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <p>{{instructorInfo.biography}}.</p>
+                        </div>
+                    </div>
+                    <div class="courses-review-comments">
+                        <h3>{{resObj?.length}} Reviews</h3>
+                        <form [formGroup]="ratingForm">
+                            <div class="user-review" *ngFor="let rev of reviewInfo">
+                                <img src="{{rev.selfie_image ? rev.selfie_image : '../../../assets/img/user_img.png'}}" alt="image">
+                                <div class="review-rating">
+                                    <div class="review-stars">
+                                        <!-- <ngx-star-rating class="frontview" [disabled]="true" formControlName="rating">
+                                        </ngx-star-rating> -->
+                                        <ngx-stars [readonly]="true" [maxStars]="5" [color]="'#f2b827'" [initialStars]="rev.rating"></ngx-stars>
+                                    </div>
+                                    <span class="d-inline-block">{{rev.user_name}}</span>
+                                </div>
+                                <p>{{rev.review}}.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <!-- <div class="courses-sidebar-information">
+                    <ul>
+                        <li>
+                            <span><i class='bx bx-group'></i> Students:</span>
+                            10
+                        </li>
+                        <li>
+                            <span><i class='bx bx-time'></i> Length:</span>
+                            1 Weeks
+                        </li>
+                        <li>
+                            <span><i class='bx bx-tachometer'></i> Effort:</span>
+                            2–5 hours per week
+                        </li>
+                        <li>
+                            <span><i class='bx bxs-institution'></i> Institution:</span>
+                            <a href="#" target="_blank" class="d-inline-block">ABC</a>
+                        </li>
+                        <li>
+                            <span><i class='bx bxs-graduation'></i> Subject:</span>
+                            Design
+                        </li>
+                        <li>
+                            <span><i class='bx bx-atom'></i> Quizzes:</span>
+                            Yes
+                        </li>
+                        <li>
+                            <span><i class='bx bxs-badge-check'></i> Level:</span>
+                            Introductory
+                        </li>
+                        <li>
+                            <span><i class='bx bx-support'></i> Language:</span>
+                            English
+                        </li>
+                        <li>
+                            <span><i class='bx bx-text'></i> Video Subtitle:</span>
+                            English
+                        </li>
+                        <li>
+                            <span><i class='bx bx-certification'></i> Certificate:</span>
+                            Yes
+                        </li>
+                    </ul>
+                </div> -->
+                <div class="courses-sidebar-syllabus">
+                    <h3>Course Syllabus</h3>
+                    <div *ngFor="let sec of courseSections">
+                        <span class="chapter">{{sec.section_title}}</span>
+                        <h4 style="font-size: 15px;">Lessons</h4>
+                        <div class="courses-list">
+                            <ul *ngFor="let lec of sec.lectures;let i=index;">
+                                <li>
+                                    {{i+1}}. {{lec.lecture_title}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

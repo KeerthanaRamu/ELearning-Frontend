@@ -1,0 +1,67 @@
+<app-settings></app-settings>
+    <div class="container">
+        <div class="myDashboard-content">
+            <form class="edit-account" [formGroup]="profileForm">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>First Name <span class="required">*</span></label>
+                            <input type="text" class="form-control" formControlName="first_name">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>Website <span class="required">*</span></label>
+                            <input type="text" class="form-control" formControlName="website" placeholder="URL">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>Last Name </label>
+                            <input type="text" class="form-control" formControlName="last_name">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>Twitter </label>
+                            <input type="text" class="form-control" formControlName="twitter">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>Head Line</label>
+                            <input type="text" class="form-control" formControlName="headline">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>Facebook </label>
+                            <input type="text" class="form-control" formControlName="facebook">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>Biography </label>
+                            <textarea class="form-control" formControlName="biography"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>Linked In </label>
+                            <input type="text" class="form-control" formControlName="linkedIn">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6"></div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group">
+                            <label>Youtube </label>
+                            <input type="text" class="form-control" formControlName="youtube">
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12" style="text-align: center;">
+                        <button type="submit" class="default-btn" (click)="updateProfileInfo()"><i class='bx bx-save icon-arrow before'></i><span class="label">Save Changes</span><i class="bx bx-save icon-arrow after"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

@@ -1,0 +1,75 @@
+<div class="register-area">
+    <div class="row m-0">
+        <div class="col-lg-12 col-md-12 p-0">
+            <div class="register-content">
+                <div class="d-table">
+                    <div class="d-table-cell">
+                        <div class="register-form">
+                            <h4>Sign Up and Start Learning!</h4>
+                            <p>Already signed up? <a routerLink="/login">Log in</a></p>
+                            <form [formGroup]="registerForm">
+                                <div class="form-group">
+                                    <div class="inner-addon left-addon">
+                                        <i class="iconinside bx bxs-user"></i>
+                                        <input type="text" formControlName="fullName" placeholder="Full Name" class="form-control">
+                                        <div *ngIf="registerFormSubmitted && (rf.fullName.invalid || rf.fullName.errors?.required)"
+                                        class="help-block mt-1 text-danger"> <i class="ft-alert-circle align-middle"></i> Full Name is
+                                        required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="inner-addon left-addon">
+                                        <i class="iconinside bx bx-mail-send"></i>
+                                        <input type="email" formControlName="email" placeholder="Email" class="form-control">
+                                        <div *ngIf="registerFormSubmitted && (rf.email.errors?.required)"
+                                        class="help-block mt-1 text-danger"> <i class="ft-alert-circle align-middle"></i> Email is
+                                        required</div>
+                                        <div *ngIf="registerFormSubmitted && (rf.email.invalid || rf.email.errors?.email)"
+                                        class="help-block mt-1 text-danger"> <i class="ft-alert-circle align-middle"></i> Email must be a valid email address</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="inner-addon left-addon">
+                                        <i class="iconinside bx bx-key"></i>
+                                        <input type="password" formControlName="password" placeholder="Password" class="form-control">
+                                        <app-password-strength [passwordToCheck]="registerForm.value.password" (passwordStrength)="passwordValid($event)"></app-password-strength>
+                                        <div *ngIf="registerFormSubmitted && (rf.password.invalid || rf.password.errors?.required)"
+                                        class="help-block mt-1 text-danger"> <i class="ft-alert-circle align-middle"></i> Password is
+                                        required</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div *ngIf="showWebcam">
+                                        <webcam  [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
+                                        [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+                                        [videoOptions]="videoOptions" [width]="200" [height]="200"
+                                        [imageQuality]="1"
+                                        (cameraSwitched)="cameraWasSwitched($event)"
+                                        (initError)="handleInitError($event)"
+                                        >
+                                        </webcam>
+                                    </div>
+                                    <div class="snapshot" *ngIf="webcamImage && !showWebcam"> 
+                                        <img  id="webImg" [width]="200" [height]="200" style="border-radius: 50%;" [src]="webcamImage.imageAsDataUrl"/>
+                                    </div>
+                                    <button class="webcam-button inner-addon-btn left-addon-btn" (click)="toggleWebcam();" *ngIf="!showWebcam"><i class="iconinside-btn bx bxs-camera"></i>Selfie
+                                    </button>
+                                    <!-- <div class="help-block mt-1 text-danger"><i class="ft-alert-circle align-middle"></i> Selfie is
+                                        required</div> -->
+                                    <button class="webcam-button inner-addon-btn1 left-addon-btn1" (click)="triggerSnapshot();" *ngIf="showWebcam"><i class="iconinside-btn1 bx bxs-photo-album"></i>Take A Snapshot</button>
+                                    <button class="webcam-button inner-addon-btn left-addon-btn" (click)="showNextWebcam(true);" *ngIf="multipleWebcamsAvailable"> <i class="iconinside-btn bx bxs-camera"></i> Camera Front / Back</button>
+                                </div> 
+                                <button type="submit" [disabled]="!passwordIsValid" (click)="setRegistrationDetails()">Sign Up</button>
+                                <div class="alert alert-danger" style="margin-top: 10px;margin-bottom: 10px;" role="alert" *ngIf="existingUser">
+                                    {{messageContent}}
+                                  </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

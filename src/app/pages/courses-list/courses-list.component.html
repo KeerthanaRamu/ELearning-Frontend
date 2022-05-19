@@ -1,0 +1,505 @@
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true">
+</ngx-spinner>
+<section class="courses-area pt-100" style="padding-top: 60px !important">
+
+  <div class="container">
+    <div class="section-title text-start">
+      <h1 style="font-size: 25px; font-weight: 600">
+        {{ categoryData[0]?.category }} Courses
+      </h1>
+    </div>
+    <div class="courses-categories-slides" style="padding-top: 10px !important">
+      <!-- <div class="container-fluid"> -->
+      <owl-carousel-o [options]="coursesSlides">
+        <ng-template
+          carouselSlide
+          class="col-lg-3 col-md-6"
+          *ngFor="let courdt of categoryCarouselData; let i = index"
+        >
+          <!-- <div > -->
+          <div class="single-courses-box mb-30">
+            <div
+              class="courses-image"
+              style="cursor: pointer"
+              (click)="goToDetailedPage(courdt)"
+            >
+              <a class="d-block"
+                ><img
+                  src="{{
+                    courdt.course_image
+                      ? courdt.course_image
+                      : 'assets/img/courses_place.png'
+                  }}"
+                  style="height: 135px; width: 100%"
+                  alt="image"
+              /></a>
+              <div class="courses-tag">
+                <a class="d-block">{{ courdt.category }}</a>
+              </div>
+            </div>
+            <div class="courses-content">
+              <h3>
+                <a class="d-inline-block">{{ courdt.course_title }}</a>
+              </h3>
+              <div class="course-author d-flex align-items-center">
+                <span>{{ courdt.user_name }}</span>
+              </div>
+              <div class="courses-rating">
+                <div class="review-stars-rated">
+                  <!-- <ngx-star-rating class="frontview" [disabled]="true" [(ngModel)]="courdt.averageRating"></ngx-star-rating> -->
+                  <ngx-stars
+                    [readonly]="true"
+                    [maxStars]="5"
+                    [color]="'#f2b827'"
+                    [initialStars]="courdt.averageRating"
+                  ></ngx-stars>
+                </div>
+                <div class="rating-total" *ngIf="courdt.averageRating > 0">
+                  {{ courdt.averageRating }} ({{ courdt.ratingCount }} Rating)
+                </div>
+              </div>
+            </div>
+            <div class="courses-box-footer">
+              <ul>
+                <li class="students-number" style="cursor: pointer">
+                  <div
+                    (click)="addToCart(courdt)"
+                    *ngIf="courdt.funcName != ''"
+                  >
+                    <i class="bx bx-cart-alt"></i>
+                    {{ courdt.funcName }}
+                  </div>
+                </li>
+                <li class="courses-price">
+                  <i
+                    [ngClass]="
+                      courdt.wishStatus == 1 ? 'bx bxs-heart' : 'bx bx-heart'
+                    "
+                    style="cursor: pointer"
+                    (click)="setWishlist(courdt)"
+                  ></i>
+                </li>
+                <li class="courses-price">${{ courdt.course_price }}</li>
+              </ul>
+            </div>
+          </div>
+          <!-- </div> -->
+        </ng-template>
+      </owl-carousel-o>
+      <!-- </div> -->
+    </div>
+  </div>
+</section>
+<hr class="my-4" />
+<div class="container">
+  <div class="section-title text-start">
+    <h1 style="font-size: 25px; font-weight: 600">Popular Instructors</h1>
+  </div>
+  <!-- <app-author-list></app-author-list> -->
+  <div class="courses-categories-slides">
+    <owl-carousel-o [options]="tutorsSlides">
+      <ng-template
+        carouselSlide
+        *ngFor="let tutor of authorInfo; let i = index"
+      >
+        <div
+          class="single-categories-courses-box mb-30"
+          style="cursor: pointer"
+          style="
+            background-color: white !important;
+            border: 1px solid #d1d7dc;
+            height: 150px;cursor: pointer;
+          "
+        (click)="getAuthorInfo(tutor)">
+          <div class="row">
+            <div style="width: 35%">
+              <img
+                src="{{
+                  tutor.selfie_image
+                    ? tutor.selfie_image
+                    : '../../../assets/img/user_img.png'
+                }}"
+                class="rounded-circle mr-2"
+                style="width: 6.4rem; height: 6.4rem"
+                alt=""
+              />
+            </div>
+            <div style="text-align: initial; width: 60%">
+              <div style="font-weight: 600">{{ tutor.user_name }}</div>
+              <div>{{ tutor.head_line ? tutor.head_line : "" }}</div>
+              <div class="courses-rating">
+                <div class="review-stars-rated" *ngIf="tutor.averageRating > 0">
+                  {{ tutor.averageRating }}
+                  <i class="bx bxs-star" style="color: #f2b827"></i> Instructor
+                  rating
+                </div>
+                <div
+                  class="review-stars-rated"
+                  *ngIf="tutor.averageRating == 0"
+                >
+                  <i class="bx bxs-star"></i> Instructor rating
+                </div>
+              </div>
+              <div>{{ tutor.studentCount }} Students</div>
+              <div>{{ tutor.courseCount }} Courses</div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </owl-carousel-o>
+  </div>
+</div>
+
+<hr class="my-4" />
+
+<div class="courses-area">
+  <div class="container">
+    <div class="section-title text-start">
+      <h1 style="font-size: 25px; font-weight: 600">
+        All {{ categoryData[0]?.category }} Courses
+      </h1>
+    </div>
+    <div class="row" style="margin-bottom: 20px">
+      <div class="col-lg-9 col-md-9">
+        <div class="row">
+          <div
+            class="col-lg-2 col-md-2"
+            style="
+              border: 1px solid;
+              padding: 10px;
+              text-align: center;
+              margin-left: 17px;
+            "
+          >
+            <span>Filters</span>
+          </div>
+          <div class="col-lg-1 col-md-2"></div>
+          <div
+            class="col-lg-2 col-md-2"
+            style="padding: 10px; text-align: center; cursor: pointer"
+            (click)="clearFilters()"
+          >
+            <span>Clear Filters</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3">
+        <select
+          (change)="onTableSizeChange($event)"
+          class="custom-select"
+          style="float: right; width: 25%"
+        >
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 col-md-3">
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseOne"
+                aria-expanded="true"
+                aria-controls="panelsStayOpen-collapseOne"
+              >
+                Ratings
+              </button>
+            </h2>
+            <div
+              id="panelsStayOpen-collapseOne"
+              class="accordion-collapse collapse show"
+              aria-labelledby="panelsStayOpen-headingOne"
+            >
+              <div class="accordion-body">
+                <form [formGroup]="filterForm">
+                  <div class="form-group mb-0 custom-radio-ml radio-animated">
+                      <p style="line-height: 0.7 !important"
+                      *ngFor="let ratingdt of ratingList">
+                        <label class="d-block" for="edo-ani1">
+                            <input
+                              class="radio_animated"
+                              [id]="ratingdt.val"
+                              type="radio"
+                              [value]="ratingdt.val"
+                              formControlName="rating"
+                              [attr.disabled]="ratingdt.count == 0 ? true : null"
+                              (change)="getFilterValue()"
+                            />
+                            <span style="padding-left: 15px; font-weight: 600"
+                              >{{ratingdt.type}}
+                            </span><span style="font-weight: 400">
+                                ({{ ratingdt.count }})</span>
+                          </label>
+                      </p>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseTwo"
+                aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseTwo"
+              >
+                Video Duration
+              </button>
+            </h2>
+            <div
+              id="panelsStayOpen-collapseTwo"
+              class="accordion-collapse collapse"
+              aria-labelledby="panelsStayOpen-headingTwo"
+            >
+              <div class="accordion-body">
+                <form [formGroup]="filterForm">
+                  <p style="line-height: 0.7 !important">
+                    <input
+                      type="checkbox"
+                      id="1"
+                      formControlName="video_duration_1"
+                    />
+                    <label for="1" style="padding-left: 15px"> 0-1 Hour</label>
+                  </p>
+                  <p style="line-height: 0.7 !important">
+                    <input
+                      type="checkbox"
+                      id="3"
+                      formControlName="video_duration_2"
+                    />
+                    <label for="3" style="padding-left: 15px"> 1-3 Hour</label>
+                  </p>
+                  <p style="line-height: 0.7 !important">
+                    <input
+                      type="checkbox"
+                      id="6"
+                      formControlName="video_duration_3"
+                    />
+                    <label for="6" style="padding-left: 15px"> 3-6 Hour</label>
+                  </p>
+                  <p style="line-height: 0.7 !important">
+                    <input
+                      type="checkbox"
+                      id="17"
+                      formControlName="video_duration_4"
+                    />
+                    <label for="17" style="padding-left: 15px">
+                      6-17 Hour</label
+                    >
+                  </p>
+                  <p style="line-height: 0.7 !important">
+                    <input
+                      type="checkbox"
+                      id="18"
+                      formControlName="video_duration_5"
+                    />
+                    <label for="18" style="padding-left: 15px"> 17+ Hour</label>
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div> -->
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseFour"
+                aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseFour"
+              >
+                Sub Category
+              </button>
+            </h2>
+            <div
+              id="panelsStayOpen-collapseFour"
+              class="accordion-collapse collapse"
+              aria-labelledby="panelsStayOpen-headingFour"
+            >
+              <div class="accordion-body">
+                <form [formGroup]="filterForm">
+                  <p
+                    style="line-height: 0.7 !important"
+                    formArrayName="sub_category" *ngFor="let subcat of subCategoryFormArray.controls; let i = index">
+                  
+                    <input
+                      type="checkbox"
+                      [formControlName]="i"
+                      [attr.disabled]="subCategoryList[i].cnt == 0 ? true : null"
+                      (change)="getFilterValue()"
+                    />
+                    <label for="subCategoryList[i].id" style="padding-left: 13px">
+                      {{ subCategoryList[i].subcategory }}</label
+                    ><span>({{ subCategoryList[i].cnt }})</span>
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingFive">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseFive"
+                aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseFive"
+              >
+                Level
+              </button>
+            </h2>
+            <div
+              id="panelsStayOpen-collapseFive"
+              class="accordion-collapse collapse"
+              aria-labelledby="panelsStayOpen-headingFive"
+            >
+              <div class="accordion-body">
+                <form [formGroup]="filterForm">
+                    <p
+                    style="line-height: 0.7 !important"
+                    formArrayName="level" *ngFor="let leveldt of levelFormArray.controls; let j = index"
+                  >
+                    <input
+                      type="checkbox"
+                      [formControlName]="j"
+                      [attr.disabled]="levelData[j].count == 0 ? true : null"
+                      (change)="getFilterValue()"
+                    />
+                    <label style="padding-left: 13px">
+                      {{ levelData[j].level }}</label
+                    ><span>({{ levelData[j].count }})</span>
+                  </p>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-9">
+        <div class="row">
+          <div
+            class="col-lg-12 col-md-12"
+            *ngFor="
+              let catDt of categoryData
+                | paginate
+                  : {
+                      itemsPerPage: tableSize,
+                      currentPage: page,
+                      totalItems: count
+                    };
+              let i = index
+            "
+          >
+            <div class="single-courses-list-box mb-30">
+              <div class="box-item" style="position: relative; height: 160px;">
+                <div class="courses-image">
+                  <div class="image bg-1">
+                    <img
+                      src="{{
+                        catDt.course_image
+                          ? catDt.course_image
+                          : 'assets/img/courses_place.png'
+                      }}"
+                      style="width: 100%; height: 100% !important"
+                      alt="image"
+                    />
+                    <a (click)="goToDetailedPage(catDt)" class="link-btn"></a>
+                    <!-- <div class="courses-tag">
+                                            <a routerLink="/courses-list" class="d-block">{{categoryInfo.category}}</a>
+                                        </div> -->
+                  </div>
+                </div>
+                <div class="courses-desc">
+                  <div class="courses-content">
+                    <h3>
+                      <a
+                        (click)="goToDetailedPage(catDt)"
+                        class="d-inline-block"
+                        >{{ catDt.course_title }}</a
+                      >
+                    </h3>
+                    <span style="font-size: 13px;">{{ catDt.course_subtitle }}</span>
+                    <div class="course-author d-flex align-items-center">
+                      <span>{{ catDt.user_name }}</span>
+                    </div>
+                    <div class="courses-rating">
+                      <div class="review-stars-rated">
+                        <!-- <ngx-star-rating class="frontview" [disabled]="true" [(ngModel)]="catDt.averageRating"></ngx-star-rating> -->
+                        <ngx-stars
+                          [readonly]="true"
+                          [maxStars]="5"
+                          [color]="'#f2b827'"
+                          [initialStars]="catDt.averageRating"
+                        ></ngx-stars>
+                      </div>
+                      <div class="rating-total" *ngIf="catDt.averageRating > 0">
+                        {{ catDt.averageRating }} ({{
+                          catDt.ratingCount
+                        }}
+                        Rating)
+                      </div>
+                    </div>
+                    <span style="font-size: 12px"
+                      >{{ catDt.totalLectures }} Lectures . {{ catDt.level }}</span
+                    >
+                  </div>
+                  <div class="courses-box-footer">
+                    <ul>
+                      <li class="students-number" style="cursor: pointer">
+                        <div
+                          (click)="addToCart(catDt)"
+                          *ngIf="catDt.funcName != ''"
+                        >
+                          <i class="bx bx-cart-alt"></i>
+                          {{ catDt.funcName }}
+                        </div>
+                      </li>
+                      <li class="courses-price">
+                        <i
+                          [ngClass]="
+                            catDt.wishStatus == 1
+                              ? 'bx bxs-heart'
+                              : 'bx bx-heart'
+                          "
+                          style="cursor: pointer"
+                          (click)="setWishlist(catDt)"
+                        ></i>
+                      </li>
+                      <li class="courses-price">${{ catDt.course_price }}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4" />
+            </div>
+          </div>
+          <div
+            class="col-lg-12 col-md-12 col-sm-12"
+            *ngIf="categoryData.length > 0"
+          >
+            <div class="pagination-area text-center">
+              <pagination-controls
+                responsive="true"
+                previousLabel="Prev"
+                nextLabel="Next"
+                (pageChange)="onTableDataChange($event)"
+              >
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

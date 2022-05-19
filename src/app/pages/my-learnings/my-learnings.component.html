@@ -1,0 +1,414 @@
+
+    <section class="courses-area pt-100" style="padding-top: 0px !important;">
+        <div class="courses-area">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+                                <div class="card" style="margin-bottom: 30px;">
+                                    <div class="card-body">
+                                        <!-- <ngb-alert *ngIf="showAlert" type="danger" class="mb-2" [dismissible]="false">
+                                            {{errorMessage}}
+                                        </ngb-alert> -->
+                                        <div id="videoContainer" style="background-color: black;" *ngIf="showVideo">
+                                            <video id="video" poster="{{courseLandingImage}}" playsinline  controls   style="width: 100%;height: 498px;"></video>
+                                        </div>
+                                        <div *ngIf="showAssessment">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                  <div class="card">
+                                                    <div class="card-header">
+                                                      <h4 class="card-title">Assessment</h4>
+                                                    </div>
+                                                    <div class="card-content">
+                                                      <div class="card-body" style="padding: 0.5rem 1rem;" *ngFor="let queries of videoQueriesList;let i=index">
+                                                        <p style="font-size: 17px;">{{i+1}}. {{queries?.question}}</p>
+                                                        <ul class="list-unstyled mb-0">
+                                                          <li class="d-inline-block mr-2">
+                                                            <div class="form-check" style="padding-left: 4.5em;">
+                                                              <input type="radio" class="form-check-input" id="{{'option1'+queries.id}}" name="{{'option'+queries.id}}" value="{{queries.option1}}" (click)="setCheckedValue(queries.id,queries.option1)">
+                                                              <label class="form-check-label" for="{{'option1'+queries.id}}">{{queries.option1}}</label>
+                                                            </div>
+                                                          </li>
+                                                          <li class="d-inline-block mr-2">
+                                                            <div class="form-check" style="padding-left: 4.5em;">
+                                                              <input type="radio" class="form-check-input" id="{{'option2'+queries.id}}"  name="{{'option'+queries.id}}" value="{{queries.option2}}" (click)="setCheckedValue(queries.id,queries.option2)">
+                                                              <label class="form-check-label" for="{{'option2'+queries.id}}">{{queries.option2}}</label>
+                                                            </div>
+                                                          </li>
+                                                          <li class="d-inline-block mr-2">
+                                                            <div class="form-check" style="padding-left: 4.5em;">
+                                                              <input type="radio" class="form-check-input" id="{{'option3'+queries.id}}"  name="{{'option'+queries.id}}" value="{{queries.option3}}" (click)="setCheckedValue(queries.id,queries.option3)">
+                                                              <label class="form-check-label" for="{{'option3'+queries.id}}">{{queries.option3}}</label>
+                                                            </div>
+                                                          </li>
+                                                          <li class="d-inline-block">
+                                                            <div class="form-check" style="padding-left: 4.5em;">
+                                                              <input type="radio" class="form-check-input" id="{{'option4'+queries.id}}"  name="{{'option'+queries.id}}" value="{{queries.option4}}" (click)="setCheckedValue(queries.id,queries.option4)">
+                                                              <label class="form-check-label" for="{{'option4'+queries.id}}">{{queries.option4}}</label>
+                                                            </div>
+                                                          </li>
+                                                          <span class="{{queries.valCheck}}" style="float: right">
+                                                            <!-- <span class="iconify" data-icon="bx:bxs-badge-check" style="color: green;"></span> -->
+                                                            <i class="{{queries.valIcon}}"></i>
+                                                        </span>
+                                                        </ul>
+                                                      </div>
+                                                    </div>
+                                                    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
+                                                        <button type="button" class="btn btn-primary mr-sm-2 mb-1" [disabled]="disableBtn" (click)="checkAnswer()">Submit</button>
+                                                        <button type="button" class="btn btn-secondary mb-1" (click)="backToPlayer()">Cancel</button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                            <div class="myDashboard-navigation">    
+                                                <ul>
+                                                    <li><a style="cursor: pointer;" [ngClass]="{'active': selectedItem.firstLi == 1}"
+                                                        (click)="listClick($event, 1, 'firstLi')"    ><i class='bx bxs-dashboard'></i> Overview</a></li>
+                                                    <li><a style="cursor: pointer;" [ngClass]="{'active': selectedItem.firstLi == 2}"
+                                                        (click)="listClick($event, 2, 'firstLi')"  ><i class='bx bx-book-open'></i> Q&A</a></li>
+                                                    <li><a style="cursor: pointer;" [ngClass]="{'active': selectedItem.firstLi == 3}"
+                                                        (click)="listClick($event, 3, 'firstLi')"  ><i class='bx bxs-notepad'></i> Notes</a></li>
+                                                    <li><a style="cursor: pointer;" [ngClass]="{'active': selectedItem.firstLi == 4}"
+                                                        (click)="listClick($event, 4, 'firstLi')"   ><i class='bx bx-home-alt'></i> Announcements</a></li>
+                                                </ul>
+                                            </div>
+                                        <div class="row" *ngIf="selectedItem.firstLi == 1">
+                                            <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
+                                            <div class="col-lg-11 col-md-12 col-sm-12 col-xs-12">
+                                                <h4 style="font-size: 25px;font-weight: 500;">About this Course</h4>
+                                                <p>{{currentCourseBasic?.course_subtitle}}</p>
+                                                <div class="jumbotron jumbotron-fluid" style="border: 1px solid #eeeeee;"></div>
+                                                <h5 style="font-size: 20px;font-weight: 600;">Description</h5>
+                                                <p>
+                                                    {{currentCourseBasic?.course_description}}
+                                                </p>
+                                                <h6 style="font-size: 15px;font-weight: 600">What you’ll learn</h6>
+                                                <ul *ngFor="let obj of courseObjectiveInfo;">
+                                                    <li>{{obj?.objective}}</li>
+                                                </ul>
+                                                <h6 style="font-size: 15px;font-weight: 600;">Are there any course requirements or prerequisites?</h6>
+                                                <ul *ngFor="let req of courseRequirementsInfo;">
+                                                    <li>{{req?.requirement}}</li>
+                                                </ul>
+                                                <h6 style="font-size: 15px;font-weight: 600">Who this course is for:</h6>
+                                                <ul *ngFor="let cousefr of courseForInfo;">
+                                                    <li>{{cousefr?.coursefor}}</li>
+                                                </ul>
+                                                <div class="jumbotron jumbotron-fluid" style="border: 1px solid #eeeeee;"></div>
+                                                <h5 style="font-size: 20px;font-weight: 600;">Instructor</h5>
+                                            <div class="row">
+                                                <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12"></div>
+                                                <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                                                <img src="{{instructorInfo?.selfie_image ? instructorInfo?.selfie_image : '../../../assets/img/user_img.png'}}" class="rounded-circle mr-2" alt="image" style="width: 80%;height:90%;">
+                                                </div>
+                                                <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" style="padding-top: 30px;">
+                                                <span>{{instructorInfo?.user_name}}</span><br/>
+                                                <span>{{instructorInfo?.head_line}}</span>
+                                            
+                                                </div>
+                                            </div> 
+                                            <div class="row">
+                                                <span>{{instructorInfo?.biography}}</span>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" *ngIf="selectedItem.firstLi == 2">
+                                            <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
+                                            <div class="col-lg-11 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="courses-review-comments" *ngIf="showQuesList">
+                                                    <h3 style="font-size: 20px;">All questions in this course <span>({{questionlist.length}})</span></h3>
+                                                        <div class="user-review" *ngFor="let ques of questionlist">
+                                                            <img src="{{ques.selfie_image ? ques.selfie_image: '../../../assets/img/user_img.png'}}" alt="image">
+                                                            <div class="review-rating">
+                                                                <b>{{ques.ques_title}}</b>
+                                                                <i class="bx bxs-message" (click)="getAnswerList(ques)" style="float: right;font-size: 25px;padding: 12px 12px 12px 5px;cursor: pointer;"><span *ngIf="ques.ansCount > 0">{{ques.ansCount}}</span></i>
+                                                            </div>
+                                                            <p style="margin-bottom: 25px;">{{ques.ques_details}}</p>
+                                                            <div class="row">
+                                                                <a style="color: #5624d0;text-decoration: none;font-weight: 400;font-size: 13px;">{{ques.user_name}}</a>
+                                                            </div>
+                                                        </div>
+                                                        <h6 style="cursor: pointer;margin-top: 30px;" (click)="goToNewQuestion()">Ask a new question</h6>
+                                                </div>
+                                                <div *ngIf="showAskQues">
+                                                    <form [formGroup]="questionForm">
+                                                        <h3 class="title" (click)="goToList()" style="font-size: 16px;cursor: pointer;border-bottom: 1px solid;width: 30%;padding: 3px;" >
+                                                            Back to All Questions
+                                                            <span style="font-size: 20px;padding: 30px;"></span>
+                                                        </h3>
+                                                        <div class="col-lg-12 col-md-12" style="margin-top: 40px;">
+                                                            <div class="form-group">
+                                                                <label>Title or summary <span class="required">*</span></label>
+                                                                <input type="text" class="form-control" formControlName="title">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12" style="margin-top: 20px;">
+                                                            <div class="form-group">
+                                                                <label>Details (optional)</label>
+                                                                <textarea class="form-control" formControlName="details"></textarea>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-md-12" style="margin-top: 30px;">
+                                                            <button  class="default-btn" (click)="setQuestionInfo()" [disabled]="questionForm.invalid"
+                                                            style="border: 1px solid;cursor: pointer;float: right;"><i
+                                                                class='bx bx-right-arrow-alt icon-arrow before'></i><span
+                                                                class="label">Publish</span><i
+                                                                class="bx bx-right-arrow-alt icon-arrow after"></i></button>
+                                                        </div>
+                                                    </form>
+                                                </div> 
+                                                <div *ngIf="showAnsList">
+                                                    <h3 class="title" (click)="goToList()" style="font-size: 16px;cursor: pointer;border-bottom: 1px solid;width: 30%;padding: 3px;" >
+                                                        Back to All Questions
+                                                        <span style="font-size: 20px;padding: 30px;"></span>
+                                                    </h3> 
+                                                    <div class="courses-review-comments">
+                                                    <div class="user-review">
+                                                        <img src="{{currentQues.selfie_image ? currentQues.selfie_image: '../../../assets/img/user_img.png'}}" alt="image">
+                                                        <div class="review-rating">
+                                                            <b>{{currentQues.ques_title}}</b>
+                                                        </div>
+                                                            <a style="color: #5624d0;text-decoration: none;font-weight: 400;font-size: 13px;">{{currentQues.user_name}}</a>
+                                                        
+                                                            <p style="margin-bottom: 25px;">{{currentQues.ques_details}}</p>
+                                                    </div>
+                                                    <div *ngIf="answerlist.length>0">
+                                                        <h4 style="font-size: 20px;margin-bottom: 1.5rem;" >{{answerlist.length}} Replies</h4>
+                                                        <div class="user-review" style="margin-left: 60px;" *ngFor="let ans of answerlist">
+                                                            <img src="{{ans.answered_profile ? ans.answered_profile: '../../../assets/img/user_img.png'}}" alt="image">
+                                                            <div class="review-rating">
+                                                                <b>{{ans.answered_user}}</b>
+                                                            </div>
+                                                                <p style="margin-bottom: 25px;">{{ans.answer}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <form [formGroup]="answerForm">
+                                                    <div class="col-lg-12 col-md-12" style="margin-top: 20px;">
+                                                        <div class="form-group">
+                                                            <label>Answer </label>
+                                                            <textarea class="form-control" formControlName="answer"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-md-12" style="margin-top: 30px;">
+                                                        <button  class="default-btn" (click)="setAnswerInfo()" [disabled]="answerForm.invalid"
+                                                        style="border: 1px solid;cursor: pointer;float: right;"><i
+                                                            class='bx bx-right-arrow-alt icon-arrow before'></i><span
+                                                            class="label">Add an answer</span><i
+                                                            class="bx bx-right-arrow-alt icon-arrow after"></i></button>
+                                                    </div>
+                                                </form>
+                                                </div>
+                                            </div>
+                                                    
+                                            </div>
+                                        </div>
+                                        <div class="row" *ngIf="selectedItem.firstLi == 3">
+                                            <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
+                                            <div class="col-lg-11 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="row">
+                                                    <div class="create-note" *ngIf="newNote" >
+                                                        <span>Create a new note at {{videoTime}}</span>
+                                                        <i class="bx bx-plus-circle" style="float: right;cursor: pointer;font-size: 22px;"  (click)="showAddNotes()"></i>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="addNotes">
+                                                    <form [formGroup]="notesForm">
+                                                        <div class="col-lg-12 col-md-12" style="margin-top: 20px;">
+                                                            <div class="form-group">
+                                                                <span style="background-color: black;
+                                                                color: white;
+                                                                border-radius: 15px;
+                                                                padding: 0px 4px 0px 4px;">{{videoTime}}</span>
+                                                                <textarea class="form-control" formControlName="notes"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12">
+                                                            <button  class="default-btn" (click)="setNotesInfo()" [disabled]="notesForm.invalid"
+                                                                style="border: 1px solid;cursor: pointer;float: right;padding: 13px 23px 12px 23px !important;">Save note</button>
+                                                                <button  class="default-btn" (click)="goBackNotes()"
+                                                                style="border: 1px solid;cursor: pointer;float: right;padding: 13px 23px 12px 23px !important;color: black;
+                                                                background-color: white;">Cancel</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="row" style="width: 93%;">
+                                                    <div style="margin-top: 50px;padding: 0px;" *ngIf="notesList?.length > 0">
+                                                        <div *ngFor="let notedt of notesList" style="margin-top: 60px;padding: 0px;">
+                                                            <span style="background-color: black;
+                                                                color: white;
+                                                                border-radius: 15px;
+                                                                padding: 0px 4px 0px 4px;">{{notedt.time}}</span><i class="bx bx-notepad" style="padding-left: 10px;"></i>
+                                                            <span style="padding-left: 10px;"><b>{{notedt.section_title}}</b> . {{notedt.lecture_title}}</span>
+                                                            <i class="bx bx-trash" style="float: right;cursor: pointer;padding: 3px;" (click)="showDeleteNotes(notedt)" data-bs-toggle="modal" data-bs-target="#confirmModal"></i>
+                                                            <i class="bx bx-pencil" style="float: right;cursor: pointer;padding-right: 10px;padding: 3px;" (click)="showEditNotes(notedt)"></i>
+                                                                <div class="col-lg-12 col-md-12" style="margin-top: 10px;" *ngIf="notedt.existsNotes">
+                                                                    <div class="form-group">
+                                                                        <div class="form-control" style="height: 60px;background-color: #fafafa;">{{notedt.notes}}</div>
+                                                                    </div>
+                                                                </div>
+                                                                <form [formGroup]="notesEditForm">
+                                                                    <div class="col-lg-12 col-md-12" style="margin-top: 10px;" *ngIf="notedt.newNotes">
+                                                                        <div class="form-group">
+                                                                            <textarea class="form-control" formControlName="notesEdit"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-12 col-md-12" *ngIf="notedt.newNotes">
+                                                                        <button  class="default-btn" (click)="updateNotesInfo(notedt)" [disabled]="notesEditForm.invalid"
+                                                                            style="border: 1px solid;cursor: pointer;float: right;padding: 13px 23px 12px 23px !important;">Update note</button>
+                                                                            <button  class="default-btn" (click)="showListNotes(notedt)"
+                                                                            style="border: 1px solid;cursor: pointer;float: right;padding: 13px 23px 12px 23px !important;color: black;
+                                                                            background-color: white;">Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                                
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" *ngIf="selectedItem.firstLi == 4">
+                                            <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12"></div>
+                                            <div class="col-lg-11 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="row" *ngIf="announcementList.length>0">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                        <img style="margin-right: 1.5rem;" width="50" height="50" src="{{instructorInfo?.selfie_image ? instructorInfo?.selfie_image : '../../../assets/img/user_img.png'}}" class="rounded-circle mr-2" alt="image">
+                                                        <span style="color: blue;">{{instructorInfo?.user_name}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="padding-top: 25px;">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="border-bottom: 1px solid #dee2e6 " *ngFor="let dt of announcementList">
+                                                        <h4 style="font-size: 20px;font-weight: 500;">{{dt.title}}</h4>
+                                                        <p>
+                                                            {{dt.description}}
+                                                        </p>
+                                                        <div class="row" style="width: 100%;margin-bottom: 20px;padding-left: 25px;margin-top: 50px;">
+                                                            <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12" style="padding-left: 30px;">
+                                                                <span class="badge badge-light comment-title" >{{userInitial}}</span>
+                                                            </div>
+                                                            <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+                                                                <form [formGroup]="announcementCommentForm">
+                                                                    <div class="form-group">
+                                                                        <input type="text" class="form-control" formControlName="comment" (focus)="showText()" (focusout)="hideText()" (keyup.enter)="setCommentInfo(dt)"  placeholder="Enter your Comment" style="border-color: black;">
+                                                                        <span *ngIf="showComInfo">Press <b>Enter</b> to post</span>
+                                                                    </div>
+                                                                </form>
+                                                             </div>
+                                                        </div>
+                                                        <div class="row" *ngIf="dt.commentInfo?.length > 0">
+                                                            <p style="color: blue;cursor: pointer;" (click)="showAllComments()">Show Comments ({{dt.commentInfo?.length}})</p>
+                                                        </div>
+                                                        <div *ngIf="showAll">
+                                                            <div class="row" style="width: 100%;margin-bottom: 20px;padding-left: 25px;margin-top: 30px;" *ngFor="let commt of dt.commentInfo">
+                                                                <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12" style="padding-left: 30px;">
+                                                                    <span class="badge badge-light comment-title" >{{commt.user_initial}}</span>
+                                                                </div>
+                                                                <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+                                                                    <p style="padding: 6px;" *ngIf="!commt.showEdit">{{commt.comment}}</p>
+                                                                    <form [formGroup]="announcementCommentEditForm" *ngIf="commt.showEdit">
+                                                                        <div class="form-group">
+                                                                            <input type="text" class="form-control" formControlName="comment" (focus)="showTextEdit(commt,dt.commentInfo)" (focusout)="hideTextEdit(commt,dt.commentInfo)" (keyup.enter)="updateCommentInfo(commt)"  placeholder="Enter your Comment" style="border-color: black;">
+                                                                            <span *ngIf="commt.showComInfo">Press <b>Enter</b> to post</span>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                                <div class="col-lg-1 col-md-12 col-sm-12 col-xs-12" style="padding: 6px;" *ngIf="(commt.user_id == loggedUser.id) && !commt.showEdit">
+                                                                    <i class="fa fa-pencil" style="padding-right: 10px;cursor: pointer;" (click)="showEditComment(commt,dt.commentInfo)"></i>
+                                                                    <i class="fa fa-trash" style="padding-right: 10px;cursor: pointer;" (click)="showDeleteComment(commt)" data-bs-toggle="modal" data-bs-target="#confirmCommentModal"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                                <!-- <div class="card" style="height: 20%;">
+                                <div class="card-body">
+                                    <video id="videoElement" style="cursor: not-allowed;position: absolute;width: 87%;height: 80%; border: 2px solid;" playsinline></video>
+                                    </div>
+                                </div> -->
+                                <div class="card" style="overflow-y: scroll;overflow-x: hidden;height: 100vh;">
+                                <h6>Contents</h6>
+                                    <div class="card-body" style="margin-bottom: 40px ! important;min-height: 0px ! important;padding: 0rem 0rem !important;" >
+                                        <div *ngFor="let item of PlayList;let i = index;">
+                                            <button class="accordion" (click)="toggleAccordian($event, i)" style="font-size: 14px;"> {{item.section_title}} </button>
+                                            <div class="panel" hide="!item.isActive" style="cursor: pointer;">
+                                            <div *ngFor="let child of item.lectures;let j = index;"   [ngStyle]="{backgroundColor: child.showPlay}"> 
+                                                <div class="row" (click)="changeVideoToPlay(child,item.lectures)">
+                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"><input type="checkbox" style="margin-left: 6px; margin-top: 7px;"></div>
+                                                    <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11"><p style="font-size: 14px;">{{j+1}}. {{child.lecture_title}} </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="padding-top: 5px;" >
+                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+                                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" (click)="changeVideoToPlay(child,item.lectures)">
+                                                         <span class="bottom-left" ><i class="bx bx-play-circle" style="font-size:15px;"></i><span style="font-size: 12px;font-weight: 400;line-height: 1.33em;padding-left: 5px;">{{child.lecture_duration}}</span></span>
+                                                    </div>
+                                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 dropdown language-switcher d-inline-block" *ngIf="child.resource_count == 1">
+                                                          <div class="btn-group" style="float: right;">
+                                                            <button class="btn btn-sm dropdown-toggle" style="border-color: black;" type="button" data-bs-toggle="dropdown" aria-expanded="false"  (click)="getResourcesListofLecture(child)">
+                                                             <i class="bx bxs-folder-open"></i> Resources
+                                                            </button>
+                                                            <ul class="dropdown-menu" style="font-size: 14px;" >
+                                                              <li *ngFor="let resc of resourceList"><a [href]="resc.resource_file" target="_blank" download><i class="bx bxs-file-blank"></i>{{resc.resource_file_name}}</a></li>
+                                                            </ul>
+                                                          </div> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>                               
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+</section>
+<div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Please Confirm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete your note?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="closeModal" data-bs-dismiss="modal" class="btn btn-primary" (click)="deleteNotesInfo()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirmCommentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Please Confirm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete your comment?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" id="closeModal" data-bs-dismiss="modal" class="btn btn-primary" (click)="deleteComment()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>

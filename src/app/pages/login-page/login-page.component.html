@@ -1,0 +1,66 @@
+<div class="login-area">
+    <div class="row m-0">
+        <div class="col-lg-12 col-md-12 p-0">
+            <div class="login-content">
+                <div class="d-table">
+                    <div class="d-table-cell">
+                        <div class="login-form">
+                            <h5>Log In to Your Account!</h5>
+                            <p>Don't have an account? <a routerLink="/sign-up">Sign up</a></p>
+                            <form [formGroup]="loginForm">
+                                <div *ngIf="showLoginEmail">
+                                    <div class="form-group">
+                                        <div class="inner-addon left-addon">
+                                            <i class="iconinside bx bx-mail-send"></i>
+                                            <input type="email" formControlName="email" placeholder="Email" class="form-control">
+                                            <div *ngIf="loginFormSubmitted && (rf.email.errors?.required)"
+                                            class="help-block mt-1 text-danger"> <i class="ft-alert-circle align-middle"></i> Email is
+                                            required</div>
+                                            <div *ngIf="loginFormSubmitted && (rf.email.invalid ||rf.email.errors?.email)"
+                                            class="help-block mt-1 text-danger"> <i class="ft-alert-circle align-middle"></i> Email must be a valid email address</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="inner-addon left-addon">
+                                            <i class="iconinside bx bx-key"></i>
+                                            <input type="password" formControlName="password" placeholder="Password" class="form-control">
+                                            <div *ngIf="loginFormSubmitted && (rf.password.invalid || rf.password.errors?.required)"
+                                            class="help-block mt-1 text-danger"> <i class="ft-alert-circle align-middle"></i> Password is
+                                            required</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="showLoginSelfie">
+                                    <div class="form-group">
+                                        <div id="videoContainer">
+                                            
+                                        </div>
+                                        
+                                    </div> 
+                                </div>
+                                <div class="login-option" *ngIf="warningMsg && showLoginSelfie">
+                                    <i class="iconinside reload bx bx-revision" (click)="showSelfieLogin()" ></i>
+                                </div>
+                                <div class="alert alert-danger" style="margin-top: 10px;margin-bottom: 10px;" role="alert" *ngIf="warningMsg">
+                                     {{messageContent}} 
+                                  </div>
+                                <button type="submit" (click)="getLoginUser()" *ngIf="showLoginEmail">Login</button>
+                                <div class="forgot-password" *ngIf="showLoginEmail">
+                                    <a routerLink="/">Forgot Password?</a>
+                                </div>
+                                <div class="login-option">
+                                    - Or Sign In With -
+                                </div>
+                                <div class="login-option">
+                                    <i class="iconinside email bx bx-mail-send" (click)="showEmailLogin()"></i>
+                                    <i class="iconinside cam bx bxs-camera" (click)="showSelfieLogin()"></i>
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
